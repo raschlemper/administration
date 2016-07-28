@@ -10,13 +10,9 @@ var router = express.Router();
  */
 
 router.get('/', systemController.findAll);
-
 router.get('/:id', systemController.findById);
-
 router.post('/', systemController.save);
-
 router.put('/:id', systemController.update);
-
 router.delete('/:id', systemController.remove);
 
 module.exports = router;

@@ -9,6 +9,7 @@ module.exports = function (app) {
 
   // app.all('/api/*', authController.isAuthenticated);
   app.use('/api/system', require('./api/routes/systemRoute'));
+  app.use('/api/user', require('./api/routes/userRoute'));
 
   // Tratamento dos erros
   // app.use(errorHandler);
