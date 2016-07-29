@@ -7,32 +7,31 @@ var User = require(config.resources.models + '/userModel');
 module.exports = (function () {
 
   var findAll = function () {
-    return User.find({}).exec();
+    return User.findAsync({});
   };
 
   var findById = function (userId) {
-    return User.findById(userId).exec();
+    return User.findByIdAsync(userId);
   };
 
   var save = function (user) {
-    return User.create(user).exec();
+    return User.createAsync(user);
   };
 
   var update = function (userId, user) {
-    return findById(userId).then(function (err, userOld) {
-      if (err) return;
-      if(!userOld) return;
-      var updated = _.merge(userOld, user);
-      return User.update(updated);
+    return User.findByIdAsync(userId).then(function (result) {
+      console.log(result);
+      if(!result) return;
+      var updated = _.merge(result, user);
+      return updated.saveAsync(updated)
+        .spread(function(updated) {
+          return updated;
+        });
     });
   };
 
   var remove = function (userId) {
-    return findById(userId).then(function (err, user) {
-      if (err) return;
-      if(!user) return;
-      return user.remove();
-    });
+    return User.findByIdAndRemoveAsync(userId);
   };
 
   return {

@@ -1,39 +1,40 @@
 'use strict'
 
 var mongoose = require('mongoose');
-mongoose.Promise = require('bluebird');
+var Promise = require("bluebird");
 var crypto = require('crypto');
 var authTypes = ['github', 'twitter', 'facebook', 'google'];
 // var deepPopulate = require('mongoose-deep-populate');
 
+Promise.promisifyAll(mongoose);
 var Schema = mongoose.Schema;
 
 var UserSchema = new Schema({
-	name: String,
-	email: { type: String, lowercase: true },
-	role: { type: String, default: 'user' },
-	hashedPassword: String,
-	provider: String,
-	salt: String,
-	facebook: {},
-	twitter: {},
-	google: {},
-	github: {}
+  name: String,
+  email: { type: String, lowercase: true },
+  role: { type: String, default: 'user' },
+  hashedPassword: String,
+  provider: String,
+  salt: String,
+  facebook: {},
+  twitter: {},
+  google: {},
+  github: {}
 });
 
 /**
  * Virtuals
  */
 UserSchema
-	.virtual('password')
-	.set(function(password) {
-		this._password = password;
-		this.salt = this.makeSalt();
-		this.hashedPassword = this.encryptPassword(password);
-	})
-	.get(function() {
-		return this._password;
-	});
+  .virtual('password')
+  .set(function(password) {
+    this._password = password;
+    this.salt = this.makeSalt();
+    this.hashedPassword = this.encryptPassword(password);
+  })
+  .get(function() {
+    return this._password;
+  });
 
 UserSchema
   .virtual('profile')
