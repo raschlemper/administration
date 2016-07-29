@@ -7,16 +7,17 @@ var controller = require('./authController');
 var User = require(config.resources.models + '/userModel');
 
 // Passport Configuration
-require('./local/passport').setup(User, config);
-// require('./facebook/passport').setup(User, config);
-// require('./google/passport').setup(User, config);
-// require('./twitter/passport').setup(User, config);
+require('./passport').local(User, config);
+// require('./passport').facebook(User, config);
+// require('./passport').twitter(User, config);
+require('./passport').google(User, config);
 
-router.use('/local', require('./local'));
-// router.use('/facebook', require('./facebook'));
-// router.use('/twitter', require('./twitter'));
-// router.use('/google', require('./google'));
+router.get('/authenticated', controller.isAuthenticated);
 
-router.get('/valide', controller.isAuthenticated);
+router.post('/local', controller.local);
+// router.post('/facebook', controller.facebook);
+// router.post('/twitter', controller.twitter);
+router.get('/google', controller.google());
+router.get('/google/callback', controller.googleCallback());
 
 module.exports = router;

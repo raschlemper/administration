@@ -19,7 +19,25 @@ var config = {
   },
   ip: process.env.IP || '127.0.0.1',
   port: process.env.PORT || 3000,
-  secrets: 'supersecret'
+  secrets: 'supersecret',
+
+  facebook: {
+    clientID:     process.env.FACEBOOK_ID || 'id',
+    clientSecret: process.env.FACEBOOK_SECRET || 'secret',
+    callbackURL:  (process.env.DOMAIN || '') + '/auth/facebook/callback'
+  },
+
+  twitter: {
+    clientID:     process.env.TWITTER_ID || 'id',
+    clientSecret: process.env.TWITTER_SECRET || 'secret',
+    callbackURL:  (process.env.DOMAIN || '') + '/auth/twitter/callback'
+  },
+
+  google: {
+    clientID:     "317866055004-o9rfbcjieu7d1jkidg0muf4hvbve933k.apps.googleusercontent.com" || 'id',
+    clientSecret: "qYgNr8YCi7ZgnlWk7MpAH1G7" || 'secret',
+    callbackURL:  'http://127.0.0.1:3000/auth/google/callback'
+  }
 };
 
 module.exports = _.merge(config, require('./' + process.env.NODE_ENV + '.js') || {});

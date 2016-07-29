@@ -1,26 +1,31 @@
 'use strict';
 
-var mongoose = require('mongoose');
-var passport = require('passport');
 var config = require('../config/environment');
 var jwt = require('jsonwebtoken');
-var expressJwt = require('express-jwt');
-var compose = require('composable-middleware');
-var User = require(config.resources.models + '/userModel');
-var validateJwt = expressJwt({ secret: config.secrets });
+var TokenError = require(config.resources.errors + "/TokenError" );
 
 module.exports = (function () {
 
-  var isAuthenticated = function () {
-    if(req.query && req.query.hasOwnProperty('access_token')) {
-      req.headers.authorization = 'Bearer ' + req.query.access_token;
+  var isAuthenticated = function (token) {
+    try {
+      return jwt.verify(token, config.secrets);     
+    } catch(err) {
+      throw new TokenError(err.message);
     }
-    validateJwt(req, res, next);
   };
 
-  var signToken = function(user) {
+  var signToken = function (user) {
     return jwt.sign({ user: user }, config.secrets, { expiresInMinutes: 60*5 });
   };
+
+  var setTokenCookie = function (req, res) {
+    if (!req.user) {
+      return res.status(404).send('Something went wrong, please try again.');
+    }
+    var token = signToken(req.user._id, req.user.role);
+    res.cookie('token', token);
+    res.redirect('/');
+  }
 
   return { 
     isAuthenticated: isAuthenticated,
