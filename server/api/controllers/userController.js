@@ -8,10 +8,8 @@ module.exports = (function () {
   
   var findAll = function (req, res, next) {
     userService.findAll().then(function (users) {
-      console.log(users);
       res.send(users);
     }, function(err) {
-      console.log(err);
       next(err);
     });
   };
@@ -26,7 +24,7 @@ module.exports = (function () {
 
   var save = function (req, res, next) {
     userService.save(req.body).then(function (save) {
-      res.send(200);
+      res.sendStatus(200);
     }, function(err) {
       next(err);
     });
@@ -34,7 +32,7 @@ module.exports = (function () {
 
   var update = function (req, res, next) {
     userService.update(req.params.id, req.body).then(function (update) {
-      res.status(200);
+      res.sendStatus(200);
     }, function(err) {
       next(err);
     });
@@ -42,7 +40,7 @@ module.exports = (function () {
 
   var remove = function (req, res, next) {
     userService.remove(req.params.id).then(function (del) {
-      res.send(200);
+      res.sendStatus(200);
     }, function(err) {
       next(err);
     });

@@ -7,11 +7,17 @@ var User = require(config.resources.models + '/userModel');
 module.exports = (function () {
 
   var findAll = function () {
-    return User.findAsync({});
+    return User.findAsync().then(function(results) {
+      return results.map(function(user) {
+        return user.profile;
+      });       
+    });
   };
 
   var findById = function (userId) {
-    return User.findByIdAsync(userId);
+    return User.findByIdAsync(userId).then(function(results) {
+      return user.profile;
+    });
   };
 
   var save = function (user) {
@@ -19,15 +25,7 @@ module.exports = (function () {
   };
 
   var update = function (userId, user) {
-    return User.findByIdAsync(userId).then(function (result) {
-      console.log(result);
-      if(!result) return;
-      var updated = _.merge(result, user);
-      return updated.saveAsync(updated)
-        .spread(function(updated) {
-          return updated;
-        });
-    });
+    return User.findByIdAndUpdateAsync(userId, user);
   };
 
   var remove = function (userId) {
