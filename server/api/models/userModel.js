@@ -84,6 +84,7 @@ UserSchema
     this.constructor.findOne({email: value}, function(err, user) {
       if(err) throw err;
       if(user) {
+        console.log('>>>>>>>>>>>>>>>>>>>>', respond);
         if(self.id === user.id) return respond(true);
         return respond(false);
       }
