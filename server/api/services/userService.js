@@ -13,6 +13,10 @@ module.exports = (function () {
     return repository.findById(id);
   };
 
+  var findOne = function (param) {
+    return repository.findOne(param);
+  };
+
   var save = function (user) {
     return repository.save(user);
   };
@@ -28,6 +32,7 @@ module.exports = (function () {
   return {
     findAll: findAll,
     findById: findById,
+    findOne: findOne,
     save: save,
     update: update,
     remove: remove

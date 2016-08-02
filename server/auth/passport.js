@@ -3,6 +3,8 @@ var LocalStrategy = require('passport-local').Strategy;
 var FacebookStrategy = require('passport-facebook').Strategy;
 var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 var TwitterStrategy = require('passport-twitter').Strategy;
+var config = require('../config/environment');
+var userService = require(config.resources.services + '/userService');
 
 exports.local = function (User, config) {
     passport.use(
@@ -69,27 +71,24 @@ exports.google = function (User, config) {
       callbackURL: config.google.callbackURL
     },
     function(accessToken, refreshToken, profile, done) {
-        console.log(profile.id);
-      User.findOne({
-        'google.id': profile.id
-      }, function(err, user) {
-        if (!user) {
-          user = new User({
-            name: profile.displayName,
-            email: profile.emails[0].value,
-            role: 'user',
-            username: profile.username,
-            provider: 'google',
-            google: profile._json
-          });
-          user.save(function(err) {
-            if (err) done(err);
-            return done(err, user);
-          });
-        } else {
-          return done(err, user);
-        }
-      });
+      userService.findOne({'google.id': profile.id})
+        .then(function(user) {
+          console.log('>>>>>>>>>> accessToken', accessToken);
+          console.log('>>>>>>>>>> refreshToken', refreshToken);
+          if (!user) {
+            user = createUser(profile);
+            userService.save(user)
+              .then(function (result) {
+                done(result);
+              }, function(err) {
+                done(err);
+              });
+          } else {
+            return done(JSON.stringify(user));
+          }
+        }, function(err) {
+          done(err);
+        });
     }
   ));
 };
@@ -126,3 +125,14 @@ exports.google = function (User, config) {
 //     }
 //   ));
 // };
+
+var createUser = function(profile) {
+  return new User({
+    name: profile.displayName,
+    email: profile.emails[0].value,
+    role: 'user',
+    username: profile.username,
+    provider: 'google',
+    google: profile._json
+  });
+}

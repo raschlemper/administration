@@ -15,8 +15,14 @@ module.exports = (function () {
   };
 
   var findById = function (userId) {
-    return User.findByIdAsync(userId).then(function(results) {
-      return user.profile;
+    return User.findByIdAsync(userId).then(function(result) {
+      return result.profile;
+    });
+  };
+
+  var findOne = function (params) {
+    return User.findOneAsync(params).then(function(result) {
+      return result.profile;
     });
   };
 
@@ -35,6 +41,7 @@ module.exports = (function () {
   return {
     findAll: findAll,
     findById: findById,
+    findOne: findOne,
     save: save,
     update: update,
     remove: remove

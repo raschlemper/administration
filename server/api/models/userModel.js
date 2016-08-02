@@ -43,7 +43,8 @@ UserSchema
       '_id': this._id,
       'name': this.name,
       'email':this.email,
-      'role': this.role
+      'role': this.role,
+      'google': this.google
     };
   });
 
