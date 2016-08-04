@@ -29,6 +29,35 @@ exports.local = function (User, config) {
     ));
 };
 
+exports.google = function (User, config) {
+  passport.use(new GoogleStrategy({
+      clientID: config.google.clientID,
+      clientSecret: config.google.clientSecret,
+      callbackURL: config.google.callbackURL
+    },
+    function(accessToken, refreshToken, profile, done) {
+      userService.findOne({'google.id': profile.id})
+        .then(function(user) {
+          console.log('>>>>>>>>>> accessToken', accessToken);
+          console.log('>>>>>>>>>> refreshToken', refreshToken);
+          if (!user) {
+            user = createUser(User, profile);
+            userService.save(user)
+              .then(function (result) {
+                done(result);
+              }, function(err) {
+                done(err);
+              });
+          } else {
+            return done(JSON.stringify(user));
+          }
+        }, function(err) {
+          done(err);
+        });
+    }
+  ));
+};
+
 // exports.facebook = function (User, config) {
 //   passport.use(new FacebookStrategy({
 //       clientID: config.facebook.clientID,
@@ -64,35 +93,6 @@ exports.local = function (User, config) {
 //   ));
 // };
 
-exports.google = function (User, config) {
-  passport.use(new GoogleStrategy({
-      clientID: config.google.clientID,
-      clientSecret: config.google.clientSecret,
-      callbackURL: config.google.callbackURL
-    },
-    function(accessToken, refreshToken, profile, done) {
-      userService.findOne({'google.id': profile.id})
-        .then(function(user) {
-          console.log('>>>>>>>>>> accessToken', accessToken);
-          console.log('>>>>>>>>>> refreshToken', refreshToken);
-          if (!user) {
-            user = createUser(profile);
-            userService.save(user)
-              .then(function (result) {
-                done(result);
-              }, function(err) {
-                done(err);
-              });
-          } else {
-            return done(JSON.stringify(user));
-          }
-        }, function(err) {
-          done(err);
-        });
-    }
-  ));
-};
-
 // exports.twitter = function (User, config) {
 //   passport.use(new TwitterStrategy({
 //     consumerKey: config.twitter.clientID,
@@ -126,7 +126,7 @@ exports.google = function (User, config) {
 //   ));
 // };
 
-var createUser = function(profile) {
+var createUser = function(User, profile) {
   return new User({
     name: profile.displayName,
     email: profile.emails[0].value,
