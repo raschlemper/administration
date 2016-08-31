@@ -17,6 +17,7 @@ module.exports = (function () {
   };
 
   var findById = function (req, res, next) {
+    console.log(systemService.findById(req.params.id));
     systemService.findById(req.params.id).then(function (system) {
       res.send(system);
     }, function(err) {

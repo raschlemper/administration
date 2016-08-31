@@ -7,31 +7,32 @@ var System = require(config.resources.models + '/systemModel');
 module.exports = (function () {
 
   var findAll = function () {
-    return System.find({}).exec();
+    return System.findAsync({}).exec();
   };
 
   var findById = function (systemId) {
+    console.log(System.findByIdAsync(systemId));
     return System.findById(systemId);
   };
 
   var save = function (system) {
-    return system.save();
+    return system.saveAsync();
   };
 
   var update = function(systemId, system) {
-    return System.findById(systemId, function (err, systemOld) {
+    return System.findByIdAsync(systemId, function (err, systemOld) {
       if (err) return;
       if(!systemOld) return;
       var updated = _.merge(systemOld, system);
-      return updated.save();
+      return updated.saveAsync();
     });
   };
 
   var remove = function (systemId) {
-    System.findById(systemId, function (err, system) {
+    System.findByIdAsync(systemId, function (err, system) {
       if (err) return;
       if(!system) return;
-      return system.remove();
+      return system.removeAsync();
     });
   };
 
