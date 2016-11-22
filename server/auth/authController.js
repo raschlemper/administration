@@ -13,7 +13,7 @@ module.exports = (function () {
       if (error) return res.json(401, error);
       if (!user) return res.json(404, {message: 'Something went wrong, please try again.'});
       var token = authService.signToken(user.profile);
-      res.json({token: token});
+      res.json({profile: user.profile, token: token});
     })(req, res, next)
   }
 
