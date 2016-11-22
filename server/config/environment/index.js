@@ -36,7 +36,7 @@ var config = {
   google: {
     clientID:     "317866055004-o9rfbcjieu7d1jkidg0muf4hvbve933k.apps.googleusercontent.com" || 'id',
     clientSecret: "qYgNr8YCi7ZgnlWk7MpAH1G7" || 'secret',
-    callbackURL:  'http://127.0.0.1:3000/auth/google/callback'
+    callbackURL:  'https://ras-administration.herokuapp.com/auth/google/callback'
   }
 };
 
