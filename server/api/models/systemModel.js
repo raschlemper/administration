@@ -1,7 +1,8 @@
 'use strict'
 
 var mongoose = require('mongoose');
-mongoose.Promise = require('bluebird');
+var Promise = require("bluebird");
+Promise.promisifyAll(mongoose);
 // var deepPopulate = require('mongoose-deep-populate');
 
 var Schema = mongoose.Schema;
