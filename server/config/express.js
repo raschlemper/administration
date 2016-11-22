@@ -32,7 +32,7 @@ module.exports = function (app) {
   var env = app.get('env');
 
   if ('production' === env) {
-    app.use(favicon(path.join(config.root, 'client/dist/img/favicon.png')));
+    // app.use(favicon(path.join(config.root, 'client/dist/img/favicon.png')));
     app.use(express.static(path.join(config.root, 'client/dist')));
     app.set('appPath', config.root + 'client/dist');
     app.use(logger('dev'));
