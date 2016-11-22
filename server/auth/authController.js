@@ -27,7 +27,6 @@ module.exports = (function () {
   }
 
   var googleCallback = function(req, res, next) {
-    console.log('teste');
     return passport.authenticate('google', {
       successRedirect : '/api/user/',
       failureRedirect : '/'
@@ -36,6 +35,7 @@ module.exports = (function () {
     
   var isAuthenticated = function (req, res, next) {
     try {
+      console.log(req.headers.authorization);
       if(req.query && req.query.hasOwnProperty('access_token')) {
         req.headers.authorization = 'Bearer ' + req.query.access_token;
       }
