@@ -54,6 +54,7 @@ module.exports = (function () {
 
   
   return {
+    profile: profile,
     findAll: findAll,
     findById: findById,
     save: save,
