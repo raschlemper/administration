@@ -17,18 +17,20 @@ module.exports = (function () {
     })(req, res, next);
   }
 
-  var google = function(req, res, next) {    
-    passport.authenticate('google', { scope : ['profile', 'email'] });
+  var google = function(req, res, next) {
+    passport.authenticate('google', {
+      failureRedirect: '/signup',
+      scope: ['https://www.googleapis.com/auth/plus.login',
+              'https://www.googleapis.com/auth/plus.profile.emails.read'],
+      session: false
+    })(req, res, next);
   }
 
   var googleCallback = function(req, res, next) {
-    passport.authenticate('google', function (err, user, info) {
-      var error = err || info;
-      if (error) return res.json(401, error);
-      if (!user) return res.json(404, {message: 'Something went wrong, please try again.'});
-      console.log(user);
-      var token = authService.signToken(user.profile);
-      res.json({profile: user.profile, token: token});
+    console.log(req, res, next);
+    return passport.authenticate('google', {
+      successRedirect : '/api/user/profile',
+      failureRedirect : '/api/user'
     })(req, res, next);
   }
     
