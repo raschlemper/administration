@@ -19,7 +19,7 @@ module.exports = (function () {
 
   var google = function(req, res, next) {
     passport.authenticate('google', {
-      failureRedirect: '/signup',
+      failureRedirect: '/api/user',
       scope: ['https://www.googleapis.com/auth/plus.login',
               'https://www.googleapis.com/auth/plus.profile.emails.read'],
       session: false
@@ -28,7 +28,7 @@ module.exports = (function () {
 
   var googleCallback = function(req, res, next) {
     console.log(req, res, next);
-    return passport.authenticate('google', {
+    passport.authenticate('google', {
       successRedirect : '/api/user/profile',
       failureRedirect : '/api/user'
     })(req, res, next);
