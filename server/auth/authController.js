@@ -8,13 +8,7 @@ var User = require(config.resources.models + '/userModel');
 module.exports = (function () {
 
   var local = function(req, res, next) {
-    passport.authenticate('local', function (err, user, info) {
-      var error = err || info;
-      if (error) return res.json(401, error);
-      if (!user) return res.json(404, {message: 'Something went wrong, please try again.'});
-      var token = authService.signToken(user.profile);
-      res.json({profile: user.profile, token: token});
-    })(req, res, next);
+    passportCallback('local', req, res, next);
   }
 
   var google = function(req, res, next) {
@@ -27,14 +21,17 @@ module.exports = (function () {
   }
 
   var googleCallback = function(req, res, next) {
-    console.log('googleCallback');
-    passport.authenticate('google', function (err, user, info) {
+    passportCallback('google', req, res, next);
+  }
+
+  var passportCallback = function(strategy, req, res, next) {
+    passport.authenticate(strategy, function (err, user, info) {
       var error = err || info;
       if (error) return res.json(401, error);
       if (!user) return res.json(404, {message: 'Something went wrong, please try again.'});
       var token = authService.signToken(user.profile);
       res.json({profile: user.profile, token: token});
-    })(req, res, next);
+    })(req, res, next);    
   }
     
   var isAuthenticated = function (req, res, next) {
