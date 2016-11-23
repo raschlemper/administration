@@ -1,10 +1,16 @@
 'use strict';
 
 var config = require('../../config/environment');
+var authService = require(config.resources.auth + './authService');
 var userService = require(config.resources.services + '/userService');
 var User = require(config.resources.models + '/userModel');
 
 module.exports = (function () {
+
+  var profile = function (req, res, next) {
+    var token = authService.signToken(req.user);
+    res.json({profile: req.user, token: token});
+  };
   
   var findAll = function (req, res, next) {
     userService.findAll().then(function (users) {

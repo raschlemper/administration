@@ -9,6 +9,7 @@ var router = express.Router();
  * /api/user
  */
 
+router.get('/profile', userController.profile);
 router.get('/', userController.findAll);
 router.get('/:id', userController.findById);
 router.post('/', userController.save);

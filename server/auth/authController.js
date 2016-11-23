@@ -28,7 +28,7 @@ module.exports = (function () {
 
   var googleCallback = function(req, res, next) {
     return passport.authenticate('google', {
-      successRedirect : '/api/user/',
+      successRedirect : '/api/user/profile',
       failureRedirect : '/'
     });
   }
