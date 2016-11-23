@@ -30,7 +30,7 @@ module.exports = (function () {
     console.log(req, res, next);
     return passport.authenticate('google', {
       successRedirect : '/api/user/profile',
-      failureRedirect : '/'
+      failureRedirect : '/api/user'
     });
   }
     
