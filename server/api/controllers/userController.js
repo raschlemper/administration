@@ -1,7 +1,7 @@
 'use strict';
 
 var config = require('../../config/environment');
-var authService = require(config.resources.auth + './authService');
+var authService = require(config.resources.auth + '/authService');
 var userService = require(config.resources.services + '/userService');
 var User = require(config.resources.models + '/userModel');
 
