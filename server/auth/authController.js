@@ -28,9 +28,12 @@ module.exports = (function () {
 
   var googleCallback = function(req, res, next) {
     console.log('googleCallback');
-    passport.authenticate('google', {
-      successRedirect : '/api/user/profile',
-      failureRedirect : '/api/user'
+    passport.authenticate('google', function (err, user, info) {
+      var error = err || info;
+      if (error) return res.json(401, error);
+      if (!user) return res.json(404, {message: 'Something went wrong, please try again.'});
+      var token = authService.signToken(user.profile);
+      res.json({profile: user.profile, token: token});
     })(req, res, next);
   }
     
