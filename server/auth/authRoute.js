@@ -17,7 +17,7 @@ router.get('/authenticated', controller.isAuthenticated);
 router.post('/local', controller.local);
 // router.post('/facebook', controller.facebook);
 // router.post('/twitter', controller.twitter);
-router.get('/google', controller.google());
-router.get('/google/callback', controller.googleCallback());
+router.get('/google', controller.google);
+router.get('/google/callback', controller.googleCallback);
 
 module.exports = router;
