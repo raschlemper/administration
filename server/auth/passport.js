@@ -36,23 +36,23 @@ exports.google = function (User, config) {
       callbackURL: config.google.callbackURL
     },
     function(accessToken, refreshToken, profile, done) {
-      userService.findOne({'google.id': profile.id})
-        .then(function(user) {
-          console.log('>>>>>>>>>> accessToken', accessToken);
-          console.log('>>>>>>>>>> refreshToken', refreshToken);
-          if (!user) {
-            user = createUser(User, profile);
-            userService.save(user)
-              .then(function (result) {
-                done(result);
-              }, function(err) {
-                done(err);
-              });
-          } else {
-            return done(JSON.stringify(user));
-          }
-        }, function(err) {
-          done(err);
+      process.nextTick(function() {
+        userService.findOne({'google.id': profile.id})
+          .then(function(user) {
+            if (!user) {
+              user = createUser(User, profile);
+              userService.save(user)
+                .then(function (result) {
+                  done(result);
+                }, function(err) {
+                  done(err);
+                });
+            } else {
+              return done(JSON.stringify(user));
+            }
+          }, function(err) {
+            done(err);
+          });
         });
     }
   ));

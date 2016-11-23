@@ -18,12 +18,7 @@ module.exports = (function () {
   }
 
   var google = function(req, res, next) {
-    return passport.authenticate('google', {
-      failureRedirect: '/signup',
-      scope: ['https://www.googleapis.com/auth/plus.login',
-              'https://www.googleapis.com/auth/plus.profile.emails.read'],
-      session: false
-    });
+    return passport.authenticate('google', { scope : ['profile', 'email'] });
   }
 
   var googleCallback = function(req, res, next) {
