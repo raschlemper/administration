@@ -1,17 +1,13 @@
 'use strict'
 
-var config = require('../../config/environment');
 var mongoose = require('mongoose');
 var Promise = require("bluebird");
 var crypto = require('crypto');
 var authTypes = ['github', 'twitter', 'facebook', 'google'];
-var System = require(config.resources.models + '/systemModel');
 // var deepPopulate = require('mongoose-deep-populate');
 
 Promise.promisifyAll(mongoose);
 var Schema = mongoose.Schema;
-
-console.log(System.schema);
 
 var UserSchema = new Schema({
   name: String,
@@ -24,7 +20,7 @@ var UserSchema = new Schema({
   twitter: {},
   google: {},
   github: {},
-  systens: [System.schema]
+  systens: [mongoose.Types.ObjectId]
 });
 
 /**
