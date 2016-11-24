@@ -8,8 +8,8 @@ module.exports = (function () {
 
   var findAll = function () {
     return User.findAsync().then(function(results) {
-      User.deepPopulate(results, 'systems', function (err, _posts) {
-        return results.map(function(user) {
+      return User.deepPopulate(results, 'systems').then(function(_results) {
+        return _results.map(function(user) {
           return user.profile;
         });       
       });
