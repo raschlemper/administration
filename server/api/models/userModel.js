@@ -4,7 +4,7 @@ var mongoose = require('mongoose');
 var Promise = require("bluebird");
 var crypto = require('crypto');
 var authTypes = ['github', 'twitter', 'facebook', 'google'];
-var deepPopulate = require('mongoose-deep-populate')(mongoose);
+// var deepPopulate = require('mongoose-deep-populate')(mongoose);
 
 Promise.promisifyAll(mongoose);
 var Schema = mongoose.Schema;
@@ -156,5 +156,5 @@ UserSchema.methods = {
   }
 };
 
-UserSchema.plugin(deepPopulate);
+// UserSchema.plugin(deepPopulate);
 module.exports = mongoose.model('User', UserSchema);
