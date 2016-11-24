@@ -114,9 +114,9 @@ UserSchema
     } else { next(); }
   });
 
-UserSchema..
-  pre('findOne', autoPopulateSystems).
-  pre('find', autoPopulateSystems);
+UserSchema
+  .pre('findOne', autoPopulateSystems)
+  .pre('find', autoPopulateSystems);
 
 /**
  * Methods
