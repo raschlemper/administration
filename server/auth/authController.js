@@ -7,6 +7,13 @@ var User = require(config.resources.models + '/userModel');
 
 module.exports = (function () {
 
+  var login = function(req, res, next) {
+    console.log(req.params);
+  }
+
+
+
+
   var local = function(req, res, next) {
     passportCallback('local', req, res, next);
   }
@@ -49,6 +56,7 @@ module.exports = (function () {
   };
   
   return {
+    login: login,
     local: local,
     google: google,
     googleCallback: googleCallback,
