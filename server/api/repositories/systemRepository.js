@@ -7,38 +7,33 @@ var System = require(config.resources.models + '/systemModel');
 module.exports = (function () {
 
   var findAll = function () {
-    return System.findAsync({}).exec();
+    return System.findAsync();
   };
 
   var findById = function (systemId) {
-    console.log(System.findByIdAsync(systemId));
-    return System.findById(systemId);
+    return System.findByIdAsync(systemId);
+  };
+
+  var findOne = function (params) {
+    return System.findOneAsync(params);
   };
 
   var save = function (system) {
-    return system.saveAsync();
+    return System.createAsync(system);
   };
 
   var update = function(systemId, system) {
-    return System.findByIdAsync(systemId, function (err, systemOld) {
-      if (err) return;
-      if(!systemOld) return;
-      var updated = _.merge(systemOld, system);
-      return updated.saveAsync();
-    });
+    return System.findByIdAndUpdateAsync(systemId, system);
   };
 
   var remove = function (systemId) {
-    System.findByIdAsync(systemId, function (err, system) {
-      if (err) return;
-      if(!system) return;
-      return system.removeAsync();
-    });
+    return System.findByIdAndRemoveAsync(userId);
   };
 
   return {
     findAll: findAll,
     findById: findById,
+    findOne: findOne,
     save: save,
     update: update,
     remove: remove

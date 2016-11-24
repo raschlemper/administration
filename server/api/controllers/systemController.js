@@ -8,16 +8,13 @@ module.exports = (function () {
   
   var findAll = function (req, res, next) {
     systemService.findAll().then(function (systems) {
-      console.log(systems);
       res.send(systems);
     }, function(err) {
-      console.log(err);
       next(err);
     });
   };
 
   var findById = function (req, res, next) {
-    console.log(systemService.findById(req.params.id));
     systemService.findById(req.params.id).then(function (system) {
       res.send(system);
     }, function(err) {
