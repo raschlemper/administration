@@ -22,6 +22,7 @@ module.exports = (function () {
   };
 
   var update = function (id, user) {
+    console.log(user);
     return repository.update(id, user);
   };
 
