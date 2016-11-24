@@ -9,7 +9,8 @@ var Schema = mongoose.Schema;
 
 var SystemSchema = new Schema({
   name: String,
-  description: String
+  description: String,
+  route: String
 });
 
 // SystemSchema.plugin(deepPopulate);
