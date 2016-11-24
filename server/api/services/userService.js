@@ -32,7 +32,7 @@ module.exports = (function () {
   };
 
   var convertLisObjectId = function(list, field) {
-    console.log(list);
+    console.log(list.length);
     if(!list) return;
     var listReturn = [];
     list.map(function(object) {
