@@ -63,7 +63,7 @@ module.exports = (function () {
   
   return {
     login: login,
-    redirect: redirect
+    redirect: redirect,
     local: local,
     google: google,
     googleCallback: googleCallback,
