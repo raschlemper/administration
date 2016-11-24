@@ -43,7 +43,7 @@ module.exports = (function () {
 
   var redirect = function(user, req, res, next) {
     var token = authService.signToken(user.profile);
-    res.redirect('http://ras-treinamento.herokuapp.com' + user.profile.system[0].route)
+    res.redirect('http://ras-treinamento.herokuapp.com' + user.profile.systems[0].route)
     // res.json({ token: token });
   }
     
