@@ -18,12 +18,12 @@ module.exports = (function () {
   };
 
   var save = function (user) {
-    user.systems = convertLisObjectId(user.systems);
+    // user.systems = convertLisObjectId(user.systems);
     return repository.save(user);
   };
 
   var update = function (id, user) {
-    user.systems = convertLisObjectId(user.systems);
+    // user.systems = convertLisObjectId(user.systems);
     return repository.update(id, user);
   };
 
