@@ -4,7 +4,7 @@ var mongoose = require('mongoose');
 var Promise = require("bluebird");
 var crypto = require('crypto');
 var authTypes = ['github', 'twitter', 'facebook', 'google'];
-var deepPopulate = require('mongoose-deep-populate');
+var deepPopulate = require('mongoose-deep-populate')(mongoose);
 
 Promise.promisifyAll(mongoose);
 var Schema = mongoose.Schema;
@@ -91,7 +91,6 @@ UserSchema
     this.constructor.findOne({email: value}, function(err, user) {
       if(err) throw err;
       if(user) {
-        console.log('>>>>>>>>>>>>>>>>>>>>', respond);
         if(self.id === user.id) return respond(true);
         return respond(false);
       }
