@@ -20,7 +20,7 @@ var UserSchema = new Schema({
   twitter: {},
   google: {},
   github: {},
-  systens: [Schema.ObjectId]
+  systems: [Schema.ObjectId]
 });
 
 /**
@@ -45,7 +45,7 @@ UserSchema
       'name': this.name,
       'email':this.email,
       'role': this.role,
-      'google': this.google
+      'systems': this.systems
     };
   });
 
