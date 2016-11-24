@@ -8,11 +8,9 @@ module.exports = (function () {
 
   var findAll = function () {
     return User.findAsync().then(function(results) {
-      return User.deepPopulate(results, 'systems').then(function(_results) {
-        return _results.map(function(user) {
-          return user.profile;
-        });       
-      });
+      return results.map(function(user) {
+        return user.profile;
+      });       
     });
   };
 

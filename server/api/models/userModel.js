@@ -23,6 +23,11 @@ var UserSchema = new Schema({
   systems: [Schema.ObjectId]
 });
 
+var autoPopulateSystems = function(next) {
+  this.populate('systems');
+  next();
+};
+
 /**
  * Virtuals
  */
@@ -108,6 +113,10 @@ UserSchema
       next(new Error('Invalid password'));
     } else { next(); }
   });
+
+UserSchema..
+  pre('findOne', autoPopulateSystems).
+  pre('find', autoPopulateSystems);
 
 /**
  * Methods
