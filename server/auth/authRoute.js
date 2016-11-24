@@ -20,6 +20,6 @@ router.post('/local', controller.local);
 router.get('/google', controller.google);
 router.get('/google/callback', controller.googleCallback);
 
-router.get('/login/:system/:strategy', controller.login);
+router.get('/login/local/:system', controller.login, controller.redirect);
 
 module.exports = router;

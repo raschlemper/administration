@@ -9,6 +9,7 @@ module.exports = (function () {
 
   var login = function(req, res, next) {
     console.log(req.params);
+    passportCallback('local', req, res, next);
   }
 
 
@@ -33,11 +34,18 @@ module.exports = (function () {
 
   var passportCallback = function(strategy, req, res, next) {
     passport.authenticate(strategy, function (err, user, info) {
+      next(user);
+    })(req, res, next);    
+  }
+
+  var redirect = function(user, req, res, next) {
+    passport.authenticate(strategy, function (err, user, info) {
       var error = err || info;
       if (error) return res.json(401, error);
       if (!user) return res.json(404, {message: 'Something went wrong, please try again.'});
       var token = authService.signToken(user.profile);
-      res.json({profile: user.profile, token: token});
+      res.redirect('http://ras-treinamento.herokuapp.com/auth/google' + user.profile.route)
+      // res.json({ token: token });
     })(req, res, next);    
   }
     
@@ -57,6 +65,7 @@ module.exports = (function () {
   
   return {
     login: login,
+    redirect: redirect
     local: local,
     google: google,
     googleCallback: googleCallback,
