@@ -20,7 +20,7 @@ var UserSchema = new Schema({
   twitter: {},
   google: {},
   github: {},
-  systens: [mongoose.Types.ObjectId]
+  systens: [Schema.ObjectId]
 });
 
 /**
