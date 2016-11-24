@@ -18,16 +18,29 @@ module.exports = (function () {
   };
 
   var save = function (user) {
+    user.systems = convertLisObjectId(user.systems);
     return repository.save(user);
   };
 
   var update = function (id, user) {
-    console.log(user);
+    user.systems = convertLisObjectId(user.systems);
     return repository.update(id, user);
   };
 
   var remove = function (id) {
     return repository.remove(id);
+  };
+
+  var convertLisObjectId = function(list, field) {
+    var listReturn;
+    list.map(function(object) {
+      listReturn.push(convertObjectId(object, field))
+    });
+    return listReturn;
+  };
+
+  var convertObjectId = function(object, field) {
+    return ObjectId(object[field]);
   };
 
   return {
