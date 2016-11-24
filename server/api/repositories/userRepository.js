@@ -7,11 +7,13 @@ var User = require(config.resources.models + '/userModel');
 module.exports = (function () {
 
   var findAll = function () {
-    return User.findAsync().then(function(results) {
-      return results.map(function(user) {
-        return user.profile;
-      });       
-    });
+    return User.findAsync()    
+            .deepPopulate('systems')
+            .then(function(results) {
+              return results.map(function(user) {
+                return user.profile;
+              });       
+            });
   };
 
   var findById = function (userId) {
