@@ -24,6 +24,7 @@ var UserSchema = new Schema({
 });
 
 var autoPopulateSystems = function(next) {
+  console.log('entro no populate');
   this.populate('systems');
   next();
 };
