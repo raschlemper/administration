@@ -20,7 +20,7 @@ var UserSchema = new Schema({
   twitter: {},
   google: {},
   github: {},
-  systems: [Schema.ObjectId]
+  systems: [{ type: Schema.Types.ObjectId, ref: 'System' }]
 });
 
 var autoPopulateSystems = function(next) {
