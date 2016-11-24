@@ -32,14 +32,17 @@ module.exports = (function () {
   };
 
   var convertLisObjectId = function(list, field) {
-    var listReturn;
+    if(!list) return;
+    var listReturn = [];
     list.map(function(object) {
-      listReturn.push(convertObjectId(object, field))
+      var ObjectId = convertObjectId(object, field);
+      if(ObjectId) { listReturn.push(ObjectId); }
     });
     return listReturn;
   };
 
   var convertObjectId = function(object, field) {
+    if(!object[field]) return;
     return ObjectId(object[field]);
   };
 
