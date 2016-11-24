@@ -11,6 +11,8 @@ var System = require(config.resources.models + '/systemModel');
 Promise.promisifyAll(mongoose);
 var Schema = mongoose.Schema;
 
+console.log(System);
+
 var UserSchema = new Schema({
   name: String,
   email: { type: String, lowercase: true },
@@ -21,8 +23,7 @@ var UserSchema = new Schema({
   facebook: {},
   twitter: {},
   google: {},
-  github: {},
-  systems: [System]
+  github: {}
 });
 
 /**
