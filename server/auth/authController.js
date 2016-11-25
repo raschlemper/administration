@@ -44,8 +44,9 @@ module.exports = (function () {
   var redirect = function(user, req, res, next) {
     console.log(req.params, req.query);
     var token = authService.signToken(user.profile);
-    res.redirect('http://ras-treinamento.herokuapp.com/#/auth/token/' + token)
-    // res.json({ token: token });
+    if(req.query && req.query.target) {
+      res.redirect(req.query.target + '?token=' + token)
+    }
   }
     
   var isAuthenticated = function (req, res, next) {
