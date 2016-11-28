@@ -20,7 +20,7 @@ module.exports = (function () {
 
   var decodeToken = function (token) {
     try {
-      console.log(token, config.secrets, jwt.decode(token, config.secrets));
+      console.log('>>>>>>> 2 >>', token, config.secrets, jwt.decode(token, config.secrets));
       return jwt.decode(token, config.secrets);     
     } catch(err) {
       throw new TokenError(err.message);
