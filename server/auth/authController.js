@@ -7,14 +7,6 @@ var User = require(config.resources.models + '/userModel');
 
 module.exports = (function () {
 
-  var login = function(req, res, next) {
-    console.log(req.params);
-    passportCallback('local', req, res, next);
-  }
-
-
-
-
   var local = function(req, res, next) {
     passportCallback('local', req, res, next);
   }
@@ -51,17 +43,30 @@ module.exports = (function () {
     
   var isAuthenticated = function (req, res, next) {
     try {
-      console.log(req.headers.authorization);
-      if(req.query && req.query.hasOwnProperty('access_token')) {
-        req.headers.authorization = 'Bearer ' + req.query.access_token;
-      }
-      var token = req.headers.authorization;
+      var token = getToken(req);
       var decoded = authService.isAuthenticated(token);
       res.sendStatus(200); 
     } catch (err) {
       res.status(401).send(err);
     }
   };
+    
+  var getUser = function (req, res, next) {
+    try {
+      var token = getToken(req);
+      var decoded = authService.isAuthenticated(token);
+      res.send(decoded); 
+    } catch (err) {
+      res.status(401).send(err);
+    }
+  };
+
+  var getToken = function() {
+      if(req.query && req.query.hasOwnProperty('access_token')) {
+        req.headers.authorization = 'Bearer ' + req.query.access_token;
+      }
+      return req.headers.authorization;    
+  }
   
   return {
     login: login,
