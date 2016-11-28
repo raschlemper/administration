@@ -18,6 +18,14 @@ module.exports = (function () {
     return jwt.sign({ user: user }, config.secrets, { expiresInMinutes: 60*5 });
   };
 
+  var decodeToken = function (token) {
+    try {
+      return jwt.decode(token, config.secrets);     
+    } catch(err) {
+      throw new TokenError(err.message);
+    }
+  };
+
   var setTokenCookie = function (req, res) {
     if (!req.user) {
       return res.status(404).send('Something went wrong, please try again.');
@@ -29,7 +37,8 @@ module.exports = (function () {
 
   return { 
     isAuthenticated: isAuthenticated,
-    signToken: signToken
+    signToken: signToken,
+    decodeToken: decodeToken
   };
 
 })();
