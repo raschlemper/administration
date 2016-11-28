@@ -74,7 +74,8 @@ module.exports = (function () {
     local: local,
     google: google,
     googleCallback: googleCallback,
-    isAuthenticated: isAuthenticated
+    isAuthenticated: isAuthenticated,
+    getUser: getUser
   };
 
 })();
