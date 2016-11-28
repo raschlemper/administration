@@ -55,7 +55,7 @@ module.exports = (function () {
     // try {
       var token = getToken(req);
       console.log('>>>>>>> 1 >>', token);
-      var decoded = authService.decode(token);
+      var decoded = authService.decodeToken(token);
       res.send(decoded); 
     // } catch (err) {
       // res.status(401).send(err);
