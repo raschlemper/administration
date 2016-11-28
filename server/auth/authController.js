@@ -54,6 +54,7 @@ module.exports = (function () {
   var getUser = function (req, res, next) {
     try {
       var token = getToken(req);
+      console.log(token);
       var decoded = authService.decode(token);
       res.send(decoded); 
     } catch (err) {
