@@ -52,14 +52,13 @@ module.exports = (function () {
   };
     
   var getUser = function (req, res, next) {
-    // try {
+    try {
       var token = getToken(req);
-      console.log('>>>>>>> 1 >>', token);
       var decoded = authService.decodeToken(token);
       res.send(decoded); 
-    // } catch (err) {
-      // res.status(401).send(err);
-    // }
+    } catch (err) {
+      res.status(401).send(err);
+    }
   };
 
   var getToken = function(req) {
