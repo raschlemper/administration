@@ -69,11 +69,10 @@ module.exports = (function () {
   }
   
   return {
-    login: login,
-    redirect: redirect,
     local: local,
     google: google,
     googleCallback: googleCallback,
+    redirect: redirect,
     isAuthenticated: isAuthenticated,
     getUser: getUser
   };
