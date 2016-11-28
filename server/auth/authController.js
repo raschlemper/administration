@@ -62,7 +62,7 @@ module.exports = (function () {
     // }
   };
 
-  var getToken = function() {
+  var getToken = function(req) {
       if(req.query && req.query.hasOwnProperty('access_token')) {
         req.headers.authorization = 'Bearer ' + req.query.access_token;
       }
