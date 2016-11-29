@@ -25,6 +25,7 @@ module.exports = (function () {
   }
 
   var googleCallback = function(req, res, next) {
+    req.query.target = req.query.state;
     passportCallback('google', req, res, next); 
   }
 
