@@ -40,6 +40,7 @@ exports.google = function (User, config) {
       userService.findOne({'google.id': profile.id})
         .then(function(user) {
           if (!user) {
+            console.log('create', user);
             user = createUser(User, profile);
             userService.save(user)
               .then(function (result) {
@@ -48,6 +49,7 @@ exports.google = function (User, config) {
                 return done(err);
               });
           } else {
+            console.log('update', user);
             userService.update(user._id, user)
               .then(function (result) {
                 return done(null, user);
