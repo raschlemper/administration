@@ -14,7 +14,7 @@ module.exports = (function () {
   }
 
   var google = function(req, res, next) {
-    passportConfig.google(User, config);
+    passportConfig.google(User, config, getTarget(req));
     passport.authenticate('google', {
       failureRedirect: getTarget(req) || config.google.callbackURL,
       scope: ['https://www.googleapis.com/auth/plus.login',

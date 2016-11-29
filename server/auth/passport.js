@@ -29,12 +29,12 @@ exports.local = function (User, config) {
     ));
 };
 
-exports.google = function (User, config) {
+exports.google = function (User, config, target) {
   passport.use(
     new GoogleStrategy({
       clientID: config.google.clientID,
       clientSecret: config.google.clientSecret,
-      callbackURL: config.google.callbackURL
+      callbackURL: getCallbackURL(config.google.callbackURL, target)
     },
     function(accessToken, refreshToken, profile, done) {
       userService.findOne({'google.id': profile.id})
@@ -134,4 +134,8 @@ var createUser = function(User, profile) {
     provider: 'google',
     google: profile._json
   });
-}
+};
+
+var getCallbackURL = function(url, target) {
+    return url + "?target=" + target;
+};
