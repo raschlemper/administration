@@ -13,7 +13,7 @@ module.exports = (function () {
     passportCallback('local', req, res, next);
   }
 
-  var localCallback = function(user, req, res, next) {
+  var redirect = function(user, req, res, next) {
     var token = authService.signToken(user.profile);
     res.redirect(getTarget(req) + '?token=' + token);
   }
@@ -35,7 +35,6 @@ module.exports = (function () {
   }
 
   var passportCallback = function(strategy, req, res, next) {
-    console.log(strategy, req.params, req.query);
     passport.authenticate(strategy, function (err, user, info) {
       var error = err || info;
       if (error) return res.json(401, error);
@@ -80,9 +79,9 @@ module.exports = (function () {
   
   return {
     local: local,
-    localCallback: localCallback,
     google: google,
     googleCallback: googleCallback,
+    redirect: redirect,
     isAuthenticated: isAuthenticated,
     getUser: getUser
   };

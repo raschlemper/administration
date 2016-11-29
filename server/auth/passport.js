@@ -37,18 +37,19 @@ exports.google = function (User, config, target) {
       callbackURL: target || config.google.callbackURL
     },
     function(accessToken, refreshToken, profile, done) {
+      console.log(accessToken, refreshToken, profile, done);
       userService.findOne({'google.id': profile.id})
         .then(function(user) {
           if (!user) {
             user = createUser(User, profile);
             userService.save(user)
               .then(function (result) {
-                return done(user);
+                return done(null, user);
               }, function(err) {
                 return done(err);
               });
           } else {
-            return done(user);
+            return done(null, user);
           }
         }, function(err) {
           return done(err);
