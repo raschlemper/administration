@@ -3,7 +3,7 @@
 var express = require('express');
 var config = require('../config/environment');
 var router = express.Router();
-// var controller = require('./authController');
+var controller = require('./authController');
 // var User = require(config.resources.models + '/userModel');
 
 // Passport Configuration
