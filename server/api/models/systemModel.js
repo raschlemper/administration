@@ -16,7 +16,7 @@ var SystemSchema = new Schema({
 /**
  * Virtuals
  */
-UserSchema
+SystemSchema
   .virtual('description')
   .get(function() {
     return {
