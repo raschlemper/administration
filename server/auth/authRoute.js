@@ -21,8 +21,8 @@ router.get('/token/user', controller.getUser);
 router.get('/google', controller.google);
 
 router.post('/login/local/:system', controller.local, controller.redirect);
-router.get('/login/google/:system', controller.google, controller.redirect);
-router.get('/google/callback', controller.googleCallback);
+router.get('/login/google/:system', controller.google);
+router.get('/google/callback', controller.googleCallback, controller.redirect);
 // router.get('/login/google/callback', controller.googleCallback);
 
 module.exports = router;
