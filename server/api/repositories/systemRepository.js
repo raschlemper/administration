@@ -9,20 +9,20 @@ module.exports = (function () {
   var findAll = function () {
     return System.findAsync().then(function(results) {
       return results.map(function(system) {
-        return system.description;
+        return system.profile;
       });       
     });
   };
 
   var findById = function (systemId) {
     return System.findByIdAsync(systemId).then(function(result) {
-      return result.description;
+      return result.profile;
     });
   };
 
   var findOne = function (params) {
     return System.findOneAsync(params).then(function(result) {
-      return result.description;
+      return result.profile;
     });
   };
 
