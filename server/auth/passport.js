@@ -88,7 +88,7 @@ var createUser = function(User, profile) {
 
 var setSystem = function(user, system) {
   if(user.systems) { user.systems = []; }
-  user.system.push(system);
+  user.systems.push(system);
 };
 
 var getCallbackURL = function(url, target) {
