@@ -31,7 +31,7 @@ module.exports = (function () {
     console.log('Entrou no passportCallback');
     passport.authenticate(strategy, function (err, user, info) {
       console.log(err, user, info);
-      var error = err || info;
+      var error = err || (!info || isEmpty(info) ? null : info);
       if (error) return res.json(401, error);
       if (!user) return res.json(404, {message: 'Something went wrong, please try again.'});
       next(user);
@@ -76,6 +76,10 @@ module.exports = (function () {
       return req.query.target;
     }    
   };
+
+  var isEmpty = function(obj) {
+    return Object.keys(obj).length === 0;
+  }
   
   return {
     local: local,
