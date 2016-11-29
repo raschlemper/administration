@@ -29,12 +29,12 @@ exports.local = function (User, config) {
     ));
 };
 
-exports.google = function (User, config, target) {
+exports.google = function (User, config) {
   passport.use(
     new GoogleStrategy({
       clientID: config.google.clientID,
       clientSecret: config.google.clientSecret,
-      callbackURL: target || config.google.callbackURL
+      callbackURL: config.google.callbackURL
     },
     function(accessToken, refreshToken, profile, done) {
       console.log(accessToken, refreshToken, profile, done);
