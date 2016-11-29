@@ -6,7 +6,7 @@ var TwitterStrategy = require('passport-twitter').Strategy;
 var config = require('../config/environment');
 var userService = require(config.resources.services + '/userService');
 
-exports.local = function (User, config) {
+exports.local = function (User, config, system) {
     passport.use(
         new LocalStrategy({
             usernameField: 'email',
@@ -18,10 +18,10 @@ exports.local = function (User, config) {
             }, function(err, user) {
                 if (err) return done(err);
                 if (!user) { 
-                    return done(null, false, { message: 'This email is not registered.' }); 
+                    return done(null, false, { message: 'EMAIL_NOT_REGISTERED' }); 
                 }
                 if (!user.authenticate(password)) { 
-                    return done(null, false, { message: 'This password is not correct.' }); 
+                    return done(null, false, { message: 'PASSWORD_NOT_CORRECT' }); 
                 }
                 return done(null, user);
             });
@@ -29,7 +29,7 @@ exports.local = function (User, config) {
     ));
 };
 
-exports.google = function (User, config) {
+exports.google = function (User, config, system) {
   passport.use(
     new GoogleStrategy({
       clientID: config.google.clientID,
@@ -37,32 +37,79 @@ exports.google = function (User, config) {
       callbackURL: config.google.callbackURL
     },
     function(accessToken, refreshToken, profile, done) {
-      userService.findOne({'google.id': profile.id})
-        .then(function(user) {
-          user = createUser(User, profile);
-          if (!user) {
-            console.log('create', user);
-            userService.save(user)
-              .then(function (result) {
-                return done(null, user);
-              }, function(err) {
-                return done(err);
-              });
-          } else {
-            console.log('update', user);
-            userService.update(user._id, user)
-              .then(function (result) {
-                return done(null, user);
-              }, function(err) {
-                return done(err);
-              });
-          }
-        }, function(err) {
-          return done(err);
-        });
+      saveOrUpdateUser(User, profile, system, done, createUser);
     }
   ));
 };
+
+var saveOrUpdateUser = function(User, profile, system, done, callbackCreateUser) {
+  userService.findOne({'google.id': profile.id})
+    .then(function(user) {
+      if (!user) { saveUser(User, profile, system, done); } 
+      else { updateUser(User, profile, system, done); }  
+    }, function(err) {
+      return done(err);
+    });    
+};
+
+var saveUser = function(User, profile, system, done) {
+  var user = callbackCreateUser(User, profile);
+  setSystem(user, system);
+  userService.save(user)
+    .then(function (result) {
+      return done(null, user);
+    }, function(err) {
+      return done(err);
+    }); 
+};
+
+var updateUser = function(User, profile, system, done) {
+  var user = callbackCreateUser(User, profile);
+  setSystem(user, system);
+  userService.update(user._id, user)
+    .then(function (result) {
+      return done(null, user);
+    }, function(err) {
+      return done(err);
+    }); 
+};
+
+var createUser = function(User, profile) {
+  return new User({
+    name: profile.displayName,
+    email: profile.emails[0].value,
+    image: profile.photos[0].value,
+    role: 'user',
+    username: profile.username,
+    provider: 'google',
+    google: profile._json
+  });
+};
+
+var setSystem = function(user, system) {
+  if(user.systems) { user.systems = []; }
+  user.system.push(system);
+};
+
+var getCallbackURL = function(url, target) {
+    return url + "?target=" + target;
+};
+
+var systemAuthorized = function(user, systemId) {
+  var authorized = false;
+  user.systems.map(function(system) {
+    if(system.id === systemId) { authorized = true; }
+  });
+  return authorized;
+};
+
+
+
+
+
+
+
+
 
 // exports.facebook = function (User, config) {
 //   passport.use(new FacebookStrategy({
@@ -131,19 +178,3 @@ exports.google = function (User, config) {
 //     }
 //   ));
 // };
-
-var createUser = function(User, profile) {
-  return new User({
-    name: profile.displayName,
-    email: profile.emails[0].value,
-    image: profile.photos[0].value,
-    role: 'user',
-    username: profile.username,
-    provider: 'google',
-    google: profile._json
-  });
-};
-
-var getCallbackURL = function(url, target) {
-    return url + "?target=" + target;
-};

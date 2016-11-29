@@ -13,5 +13,18 @@ var SystemSchema = new Schema({
   route: String
 });
 
+/**
+ * Virtuals
+ */
+UserSchema
+  .virtual('description')
+  .get(function() {
+    return {
+      'id': this._id,
+      'description': this.description,
+      'route':this.route
+    };
+  });
+
 // SystemSchema.plugin(deepPopulate);
 module.exports = mongoose.model('System', SystemSchema);

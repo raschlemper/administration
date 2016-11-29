@@ -9,12 +9,12 @@ var passportConfig = require('./passport');
 module.exports = (function () {
 
   var local = function(req, res, next) {
-    passportConfig.local(User, config);
+    passportConfig.local(User, config, getSystem(req));
     passportCallback('local', req, res, next);
   }
 
   var google = function(req, res, next) {
-    passportConfig.google(User, config);
+    passportConfig.google(User, config, getSystem(req));
     passport.authenticate('google', {
       failureRedirect: getTarget(req) || config.google.callbackURL,
       scope: ['https://www.googleapis.com/auth/plus.login',
@@ -74,6 +74,11 @@ module.exports = (function () {
     if(req.query && req.query.target) {
       return req.query.target;
     }    
+  };
+
+  var getSystem = function(req) {
+    if(req.query && req.query.system) {
+      return req.query.system;  
   };
 
   var isEmpty = function(obj) {

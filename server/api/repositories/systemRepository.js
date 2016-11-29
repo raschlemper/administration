@@ -7,15 +7,23 @@ var System = require(config.resources.models + '/systemModel');
 module.exports = (function () {
 
   var findAll = function () {
-    return System.findAsync();
+    return System.findAsync().then(function(results) {
+      return results.map(function(system) {
+        return system.description;
+      });       
+    });
   };
 
   var findById = function (systemId) {
-    return System.findByIdAsync(systemId);
+    return System.findByIdAsync(systemId).then(function(result) {
+      return result.description;
+    });
   };
 
   var findOne = function (params) {
-    return System.findOneAsync(params);
+    return System.findOneAsync(params).then(function(result) {
+      return result.description;
+    });
   };
 
   var save = function (system) {

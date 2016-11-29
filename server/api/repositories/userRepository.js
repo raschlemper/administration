@@ -21,7 +21,9 @@ module.exports = (function () {
   };
 
   var findOne = function (params) {
-    return User.findOneAsync(params);
+    return User.findOneAsync(params).then(function(result) {
+      return result.profile;
+    });
   };
 
   var save = function (user) {

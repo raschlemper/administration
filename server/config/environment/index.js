@@ -24,19 +24,19 @@ var config = {
   facebook: {
     clientID:     process.env.FACEBOOK_ID || 'id',
     clientSecret: process.env.FACEBOOK_SECRET || 'secret',
-    callbackURL:  (process.env.DOMAIN || '') + '/auth/facebook/callback'
+    callbackURL:  'https://ras-administration.herokuapp.com/auth/login/facebook/callback'
   },
 
   twitter: {
     clientID:     process.env.TWITTER_ID || 'id',
     clientSecret: process.env.TWITTER_SECRET || 'secret',
-    callbackURL:  (process.env.DOMAIN || '') + '/auth/twitter/callback'
+    callbackURL:  'https://ras-administration.herokuapp.com/auth/login/twitter/callback'
   },
 
   google: {
     clientID:     "317866055004-q70qjlt86mu46jkscrqmj1ctpnn4kacv.apps.googleusercontent.com" || 'id',
     clientSecret: "wV3MvlhRljh605t7A6UhJSYB" || 'secret',
-    callbackURL:  'https://ras-administration.herokuapp.com/auth/google/callback'
+    callbackURL:  'https://ras-administration.herokuapp.com/auth/login/google/callback'
   }
 };
 
