@@ -43,12 +43,12 @@ exports.google = function (User, config) {
               user = createUser(User, profile);
               userService.save(user)
                 .then(function (result) {
-                  done(result);
+                  return done(user);
                 }, function(err) {
-                  done(err);
+                  return done(err);
                 });
             } else {
-              return done(JSON.stringify(user));
+              return done(user);
             }
           }, function(err) {
             done(err);
