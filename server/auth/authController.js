@@ -14,12 +14,13 @@ module.exports = (function () {
   }
 
   var google = function(req, res, next) {
-    passportConfig.google(User, config, getTarget(req));
+    passportConfig.google(User, config);
     passport.authenticate('google', {
       failureRedirect: getTarget(req) || config.google.callbackURL,
       scope: ['https://www.googleapis.com/auth/plus.login',
               'https://www.googleapis.com/auth/plus.profile.emails.read'],
-      session: false
+      session: false,
+      state: getTarget(req)
     })(req, res, next);
   }
 
