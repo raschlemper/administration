@@ -4,16 +4,24 @@ var config = require('../config/environment');
 var passport = require('passport');
 var authService = require('./authService');
 var User = require(config.resources.models + '/userModel');
+var passportConfig = require('./passport');
 
 module.exports = (function () {
 
   var local = function(req, res, next) {
+    passportConfig.local(User, config);
     passportCallback('local', req, res, next);
   }
 
+  var localCallback = function(user, req, res, next) {
+    var token = authService.signToken(user.profile);
+    res.redirect(getTarget(req) + '?token=' + token);
+  }
+
   var google = function(req, res, next) {
+    passportConfig.google(User, config, getTarget(req));
     passport.authenticate('google', {
-      failureRedirect: '/api/user',
+      failureRedirect: getTarget(req) || config.google.callbackURL,
       scope: ['https://www.googleapis.com/auth/plus.login',
               'https://www.googleapis.com/auth/plus.profile.emails.read'],
       session: false
@@ -21,7 +29,9 @@ module.exports = (function () {
   }
 
   var googleCallback = function(req, res, next) {
-    passportCallback('google', req, res, next);
+    // passportCallback('google', req, res, next);    
+    var token = authService.signToken(user.profile);
+    res.redirect(getTarget(req) + '?token=' + token);
   }
 
   var passportCallback = function(strategy, req, res, next) {
@@ -32,14 +42,6 @@ module.exports = (function () {
       if (!user) return res.json(404, {message: 'Something went wrong, please try again.'});
       next(user);
     })(req, res, next);    
-  }
-
-  var redirect = function(user, req, res, next) {
-    console.log(req.params, req.query);
-    var token = authService.signToken(user.profile);
-    if(req.query && req.query.target) {
-      res.redirect(req.query.target + '?token=' + token)
-    }
   }
     
   var isAuthenticated = function (req, res, next) {
@@ -67,13 +69,20 @@ module.exports = (function () {
         req.headers.authorization = 'Bearer ' + req.query.access_token;
       }
       return req.headers.authorization;    
-  }
+  };
+
+  var getTarget = function(req) {
+    console.log(req.params, req.query);    
+    if(req.query && req.query.target) {
+      return req.query.target;
+    }    
+  };
   
   return {
     local: local,
+    localCallback: localCallback,
     google: google,
     googleCallback: googleCallback,
-    redirect: redirect,
     isAuthenticated: isAuthenticated,
     getUser: getUser
   };

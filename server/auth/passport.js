@@ -29,30 +29,29 @@ exports.local = function (User, config) {
     ));
 };
 
-exports.google = function (User, config) {
-  passport.use(new GoogleStrategy({
+exports.google = function (User, config, target) {
+  passport.use(
+    new GoogleStrategy({
       clientID: config.google.clientID,
       clientSecret: config.google.clientSecret,
-      callbackURL: config.google.callbackURL
+      callbackURL: target || config.google.callbackURL
     },
     function(accessToken, refreshToken, profile, done) {
-      process.nextTick(function() {
-        userService.findOne({'google.id': profile.id})
-          .then(function(user) {
-            if (!user) {
-              user = createUser(User, profile);
-              userService.save(user)
-                .then(function (result) {
-                  return done(user);
-                }, function(err) {
-                  return done(err);
-                });
-            } else {
-              return done(user);
-            }
-          }, function(err) {
-            done(err);
-          });
+      userService.findOne({'google.id': profile.id})
+        .then(function(user) {
+          if (!user) {
+            user = createUser(User, profile);
+            userService.save(user)
+              .then(function (result) {
+                return done(user);
+              }, function(err) {
+                return done(err);
+              });
+          } else {
+            return done(user);
+          }
+        }, function(err) {
+          return done(err);
         });
     }
   ));
