@@ -21,8 +21,9 @@ SystemSchema
   .get(function() {
     return {
       'id': this._id,
+      'name': this.name,
       'description': this.description,
-      'route':this.route
+      'route': this.route
     };
   });
 
