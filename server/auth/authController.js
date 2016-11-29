@@ -13,11 +13,6 @@ module.exports = (function () {
     passportCallback('local', req, res, next);
   }
 
-  var redirect = function(user, req, res, next) {
-    var token = authService.signToken(user.profile);
-    res.redirect(getTarget(req) + '?token=' + token);
-  }
-
   var google = function(req, res, next) {
     passportConfig.google(User, config, getTarget(req));
     passport.authenticate('google', {
@@ -29,9 +24,7 @@ module.exports = (function () {
   }
 
   var googleCallback = function(req, res, next) {
-    // passportCallback('google', req, res, next);    
-    var token = authService.signToken(user.profile);
-    res.redirect(getTarget(req) + '?token=' + token);
+    passportCallback('google', req, res, next); 
   }
 
   var passportCallback = function(strategy, req, res, next) {
@@ -41,7 +34,12 @@ module.exports = (function () {
       if (!user) return res.json(404, {message: 'Something went wrong, please try again.'});
       next(user);
     })(req, res, next);    
-  }
+  };
+
+  var redirect = function(user, req, res, next) {
+    var token = authService.signToken(user.profile);
+    res.redirect(getTarget(req) + '?token=' + token);
+  };
     
   var isAuthenticated = function (req, res, next) {
     try {
