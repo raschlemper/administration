@@ -28,6 +28,7 @@ module.exports = (function () {
   }
 
   var passportCallback = function(strategy, req, res, next) {
+    console.log('Entrou no passportCallback');
     passport.authenticate(strategy, function (err, user, info) {
       var error = err || info;
       if (error) return res.json(401, error);
@@ -70,7 +71,6 @@ module.exports = (function () {
   };
 
   var getTarget = function(req) {
-    console.log(req.params, req.query);    
     if(req.query && req.query.target) {
       return req.query.target;
     }    
