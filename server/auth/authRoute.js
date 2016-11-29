@@ -19,9 +19,10 @@ router.get('/token/user', controller.getUser);
 // router.post('/facebook', controller.facebook);
 // router.post('/twitter', controller.twitter);
 router.get('/google', controller.google);
-router.get('/google/callback', controller.googleCallback);
 
 router.post('/login/local/:system', controller.local, controller.redirect);
-router.post('/login/google/:system', controller.google, controller.redirect);
+router.get('/login/google/:system', controller.google, controller.redirect);
+router.get('/google/callback', controller.googleCallback);
+// router.get('/login/google/callback', controller.googleCallback);
 
 module.exports = router;
