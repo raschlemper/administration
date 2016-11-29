@@ -20,7 +20,7 @@ module.exports = (function () {
       scope: ['https://www.googleapis.com/auth/plus.login',
               'https://www.googleapis.com/auth/plus.profile.emails.read'],
       session: false,
-      target: req.query.target
+      state: { target: req.query.target }
     })(req, res, next);
   }
 
