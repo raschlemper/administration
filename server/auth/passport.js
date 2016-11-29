@@ -133,11 +133,11 @@ exports.google = function (User, config) {
 // };
 
 var createUser = function(User, profile) {
-  console.log(profile.image);
+  console.log(profile, profile.name, profile.url);
   return new User({
     name: profile.displayName,
     email: profile.emails[0].value,
-    image: profile.image.url,
+    // image: profile.image.url,
     role: 'user',
     username: profile.username,
     provider: 'google',
