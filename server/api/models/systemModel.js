@@ -2,9 +2,8 @@
 
 var mongoose = require('mongoose');
 var Promise = require("bluebird");
-Promise.promisifyAll(mongoose);
-// var deepPopulate = require('mongoose-deep-populate');
 
+Promise.promisifyAll(mongoose);
 var Schema = mongoose.Schema;
 
 var SystemSchema = new Schema({
@@ -17,7 +16,7 @@ var SystemSchema = new Schema({
  * Virtuals
  */
 SystemSchema
-  .virtual('description')
+  .virtual('profile')
   .get(function() {
     return {
       'id': this._id,
@@ -27,5 +26,4 @@ SystemSchema
     };
   });
 
-// SystemSchema.plugin(deepPopulate);
 module.exports = mongoose.model('System', SystemSchema);
