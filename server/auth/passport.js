@@ -39,9 +39,9 @@ exports.google = function (User, config) {
     function(accessToken, refreshToken, profile, done) {
       userService.findOne({'google.id': profile.id})
         .then(function(user) {
+          user = createUser(User, profile);
           if (!user) {
             console.log('create', user);
-            user = createUser(User, profile);
             userService.save(user)
               .then(function (result) {
                 return done(null, user);
