@@ -77,8 +77,8 @@ module.exports = (function () {
   };
 
   var getSystem = function(req) {
-    if(req.query && req.query.system) {
-      return req.query.system;  
+    if(req.params && req.params.system) {
+      return req.params.system;  
     }
   };
 
