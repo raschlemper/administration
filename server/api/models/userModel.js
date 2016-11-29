@@ -47,9 +47,10 @@ UserSchema
   .virtual('profile')
   .get(function() {
     return {
-      '_id': this._id,
+      'id': this._id,
       'name': this.name,
       'email':this.email,
+      'image': this.image,
       'role': this.role,
       'systems': this.systems
     };

@@ -48,7 +48,12 @@ exports.google = function (User, config) {
                 return done(err);
               });
           } else {
-            return done(null, user);
+            userService.update(user._id, user)
+              .then(function (result) {
+                return done(null, user);
+              }, function(err) {
+                return done(err);
+              });
           }
         }, function(err) {
           return done(err);

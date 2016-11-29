@@ -30,9 +30,7 @@ module.exports = (function () {
   }
 
   var passportCallback = function(strategy, req, res, next) {
-    console.log('Entrou no passportCallback');
     passport.authenticate(strategy, function (err, user, info) {
-      console.log(err, user, info);
       var error = err || (!info || isEmpty(info) ? null : info);
       if (error) return res.json(401, error);
       if (!user) return res.json(404, {message: 'Something went wrong, please try again.'});
@@ -42,7 +40,6 @@ module.exports = (function () {
 
   var redirect = function(user, req, res, next) {
     var token = authService.signToken(user.profile);
-    console.log('Entrou no redirect', getTarget(req) + '?token=' + token);
     res.redirect(getTarget(req) + '?token=' + token);
   };
     
