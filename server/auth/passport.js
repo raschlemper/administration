@@ -37,7 +37,6 @@ exports.google = function (User, config) {
       callbackURL: config.google.callbackURL
     },
     function(accessToken, refreshToken, profile, done) {
-      console.log(accessToken, refreshToken, profile, done);
       userService.findOne({'google.id': profile.id})
         .then(function(user) {
           if (!user) {
