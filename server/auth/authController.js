@@ -39,8 +39,8 @@ module.exports = (function () {
   };
 
   var redirect = function(user, req, res, next) {
-    console.log('Entrou no redirect');
     var token = authService.signToken(user.profile);
+    console.log('Entrou no redirect', getTarget(req) + '?token=' + token);
     res.redirect(getTarget(req) + '?token=' + token);
   };
     
