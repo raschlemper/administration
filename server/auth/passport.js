@@ -52,7 +52,7 @@ var saveOrUpdateUser = function(User, profile, system, done, callbackCreateUser)
     });    
 };
 
-var saveUser = function(User, profile, system, done) {
+var saveUser = function(User, profile, system, done, callbackCreateUser) {
   var user = callbackCreateUser(User, profile);
   setSystem(user, system);
   userService.save(user)
@@ -63,7 +63,7 @@ var saveUser = function(User, profile, system, done) {
     }); 
 };
 
-var updateUser = function(User, profile, system, done) {
+var updateUser = function(User, profile, system, done, callbackCreateUser) {
   var user = callbackCreateUser(User, profile);
   setSystem(user, system);
   userService.update(user._id, user)
