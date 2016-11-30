@@ -45,7 +45,7 @@ exports.google = function (User, config, system) {
 var saveOrUpdateUser = function(User, profile, system, done, callbackCreateUser) {
   userService.findOne({'google.id': profile.id})
     .then(function(user) {
-      var userProfile = callbackCreateUser(User, profile, id);
+      var userProfile = callbackCreateUser(User, profile);
       setId(userProfile, user);
       setSystem(userProfile, system);
       if (!user) { saveUser(User, userProfile, done, callbackCreateUser); } 
