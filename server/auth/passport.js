@@ -45,7 +45,8 @@ exports.google = function (User, config, system) {
 var saveOrUpdateUser = function(User, profile, system, done, callbackCreateUser) {
   userService.findOne({'google.id': profile.id})
     .then(function(user) {
-      var userProfile = callbackCreateUser(User, profile, user._id);
+      var userProfile = callbackCreateUser(User, profile, id);
+      setId(userProfile, user);
       setSystem(userProfile, system);
       if (!user) { saveUser(User, userProfile, done, callbackCreateUser); } 
       else { updateUser(User, userProfile, done, callbackCreateUser); }  
@@ -74,7 +75,7 @@ var updateUser = function(User, userProfile, done, callbackCreateUser) {
     }); 
 };
 
-var createUser = function(User, profile, id) {
+var createUser = function(User, profile) {
   var user = new User({
     _id: id,
     name: profile.displayName,
@@ -85,17 +86,17 @@ var createUser = function(User, profile, id) {
     provider: 'google',
     google: profile._json
   });
-  if(id) { user._id = id; }
   return user;
 };
 
-var setId = function(user, id) {
-  if(id) { user._id = id; }
+var setId = function(profile, user) {
+  var id = (user && user._id) || null;
+  profile._id = id;
 };
 
-var setSystem = function(user, system) {
-  if(user.systems) { user.systems = []; }
-  user.systems.push(system.toString());
+var setSystem = function(profile, system) {
+  if(profile.systems) { profile.systems = []; }
+  profile.systems.push(system.toString());
 };
 
 var getCallbackURL = function(url, target) {
