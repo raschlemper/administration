@@ -31,8 +31,7 @@ module.exports = (function () {
 
   var passportCallback = function(strategy, req, res, next) {
     passport.authenticate(strategy, function (err, user, info) {
-      var error = err || (!info || isEmpty(info) ? null : info);
-      console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>', error, user);      
+      var error = err || (!info || isEmpty(info) ? null : info); 
       if (error) return res.json(401, error);
       if (!user) return res.json(404, {message: 'Something went wrong, please try again.'});
       next(user);
