@@ -27,7 +27,7 @@ module.exports = (function () {
 
   var findOneGoogle = function (param) {
     return repository.findOne(param).then(function(result) {
-      return result.google;
+      return result.profileGoogle;
     });
   };
 

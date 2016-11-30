@@ -56,7 +56,7 @@ UserSchema
   });
 
 UserSchema
-  .virtual('google')
+  .virtual('profileGoogle')
   .get(function() {
     return {
       'id': this._id,
