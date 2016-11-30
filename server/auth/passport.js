@@ -18,13 +18,13 @@ exports.local = function (User, config, system) {
             }, function(err, user) {
                 if (err) return done(err);
                 if (!user) { 
-                    return done(null, false, { message: 'EMAIL_NOT_REGISTERED' }); 
+                    return done(null, false, 'EMAIL_NOT_REGISTERED'); 
                 }
                 if (!user.authenticate(password)) { 
-                    return done(null, false, { message: 'PASSWORD_NOT_CORRECT' }); 
+                    return done(null, false, 'PASSWORD_NOT_CORRECT'); 
                 }                
                 if (!systemAuthorized(user, system)) { 
-                    return done(null, false, { message: 'SYSTEM_NOT_AUTHORIZED' }); 
+                    return done(null, false, 'SYSTEM_NOT_AUTHORIZED'); 
                 }
                 return done(null, user);
             });
@@ -49,7 +49,7 @@ var saveOrUpdateUser = function(User, profile, system, done, callbackCreateUser)
   userService.findOne({'google.id': profile.id})
     .then(function(user) {               
       if (!systemAuthorized(user, system)) { 
-          return done(null, false, { message: 'SYSTEM_NOT_AUTHORIZED' }); 
+          return done(null, false, 'SYSTEM_NOT_AUTHORIZED'); 
       }
       var userProfile = callbackCreateUser(User, profile);
       setId(userProfile, user);
@@ -64,7 +64,6 @@ var saveOrUpdateUser = function(User, profile, system, done, callbackCreateUser)
 var saveUser = function(User, userProfile, done, callbackCreateUser) {
   userService.save(userProfile)
     .then(function (result) {
-      console.log(result);
       return done(null, result);
     }, function(err) {
       return done(err);
@@ -74,7 +73,6 @@ var saveUser = function(User, userProfile, done, callbackCreateUser) {
 var updateUser = function(User, userProfile, done, callbackCreateUser) {
   userService.update(userProfile._id, userProfile)
     .then(function (result) {
-      console.log(result);
       return done(null, result);
     }, function(err) {
       return done(err);
