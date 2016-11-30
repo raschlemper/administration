@@ -19,7 +19,7 @@ SystemSchema
   .virtual('profile')
   .get(function() {
     return {
-      'id': this._id,
+      '_id': this._id,
       'name': this.name,
       'description': this.description,
       'route': this.route

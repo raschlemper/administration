@@ -46,7 +46,7 @@ UserSchema
   .virtual('profile')
   .get(function() {
     return {
-      'id': this._id,
+      '_id': this._id,
       'name': this.name,
       'email':this.email,
       'image': this.image,
@@ -59,7 +59,7 @@ UserSchema
   .virtual('profileGoogle')
   .get(function() {
     return {
-      'id': this._id,
+      '_id': this._id,
       'name': this.name,
       'email':this.email,
       'image': this.image,

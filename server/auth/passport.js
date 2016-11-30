@@ -37,7 +37,6 @@ exports.google = function (User, config, system) {
       callbackURL: config.google.callbackURL
     },
     function(accessToken, refreshToken, profile, done) {
-      console.log(accessToken, refreshToken, profile, done);
       saveOrUpdateUser(User, profile, system, done, createUser);
     }
   ));
@@ -56,6 +55,7 @@ var saveOrUpdateUser = function(User, profile, system, done, callbackCreateUser)
 var saveUser = function(User, profile, system, done, callbackCreateUser) {
   var user = callbackCreateUser(User, profile);
   setSystem(user, system);
+  console.log(user);
   userService.save(user)
     .then(function (result) {
       return done(null, user);
@@ -67,6 +67,7 @@ var saveUser = function(User, profile, system, done, callbackCreateUser) {
 var updateUser = function(User, profile, system, done, callbackCreateUser) {
   var user = callbackCreateUser(User, profile);
   setSystem(user, system);
+  console.log(user);
   userService.update(user._id, user)
     .then(function (result) {
       return done(null, user);
