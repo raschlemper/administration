@@ -45,10 +45,10 @@ exports.google = function (User, config, system) {
 var saveOrUpdateUser = function(User, profile, system, done, callbackCreateUser) {
   userService.findOne({'google.id': profile.id})
     .then(function(user) {
-      var userProfile = callbackCreateUser(User, profile);
+      var userProfile = callbackCreateUser(User, profile, user._id);
       setSystem(userProfile, system);
       if (!user) { saveUser(User, userProfile, done, callbackCreateUser); } 
-      else { updateUser(User, user, userProfile, done, callbackCreateUser); }  
+      else { updateUser(User, userProfile, done, callbackCreateUser); }  
     }, function(err) {
       return done(err);
     });    
@@ -63,8 +63,8 @@ var saveUser = function(User, userProfile, done, callbackCreateUser) {
     }); 
 };
 
-var updateUser = function(User, user, userProfile, done, callbackCreateUser) {
-  userService.update(user._id, userProfile)
+var updateUser = function(User, userProfile, done, callbackCreateUser) {
+  userService.update(userProfile._id, userProfile)
     .then(function (result) {
       return done(null, user);
     }, function(err) {
@@ -72,8 +72,9 @@ var updateUser = function(User, user, userProfile, done, callbackCreateUser) {
     }); 
 };
 
-var createUser = function(User, profile) {
+var createUser = function(User, profile, id) {
   return new User({
+    _id: id,
     name: profile.displayName,
     email: profile.emails[0].value,
     image: profile.photos[0].value,
