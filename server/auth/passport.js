@@ -73,7 +73,7 @@ var updateUser = function(User, userProfile, done, callbackCreateUser) {
 };
 
 var createUser = function(User, profile, id) {
-  return new User({
+  var user = new User({
     _id: id,
     name: profile.displayName,
     email: profile.emails[0].value,
@@ -83,6 +83,8 @@ var createUser = function(User, profile, id) {
     provider: 'google',
     google: profile._json
   });
+  if(id) { user._id = id; }
+  return user;
 };
 
 var setId = function(user, id) {
