@@ -34,7 +34,8 @@ exports.google = function (User, config, system) {
     new GoogleStrategy({
       clientID: config.google.clientID,
       clientSecret: config.google.clientSecret,
-      callbackURL: config.google.callbackURL
+      callbackURL: config.google.callbackURL,
+      passReqToCallback: true
     },
     function(accessToken, refreshToken, profile, done) {
       saveOrUpdateUser(User, profile, system, done, createUser);
