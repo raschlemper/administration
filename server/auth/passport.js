@@ -47,8 +47,8 @@ var saveOrUpdateUser = function(User, profile, system, done, callbackCreateUser)
     .then(function(user) {
       var userProfile = callbackCreateUser(User, profile);
       setSystem(userProfile, system);
-      if (!user) { saveUser(User, userProfile, system, done, callbackCreateUser); } 
-      else { updateUser(User, user, userProfile, system, done, callbackCreateUser); }  
+      if (!user) { saveUser(User, userProfile, done, callbackCreateUser); } 
+      else { updateUser(User, user, userProfile, done, callbackCreateUser); }  
     }, function(err) {
       return done(err);
     });    
