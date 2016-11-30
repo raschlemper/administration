@@ -65,6 +65,7 @@ module.exports = (function () {
     findAll: findAll,
     findById: findById,
     findOne: findOne,
+    findOneGoogle: findOneGoogle,
     save: save,
     update: update,
     remove: remove
