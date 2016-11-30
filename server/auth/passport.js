@@ -34,8 +34,7 @@ exports.google = function (User, config, system) {
     new GoogleStrategy({
       clientID: config.google.clientID,
       clientSecret: config.google.clientSecret,
-      callbackURL: config.google.callbackURL,
-      passReqToCallback: true
+      callbackURL: config.google.callbackURL
     },
     function(accessToken, refreshToken, profile, done) {
       console.log(profile);
