@@ -48,10 +48,7 @@ var saveOrUpdateUser = function(User, profile, system, done, callbackCreateUser)
       var userProfile = callbackCreateUser(User, profile);
       setSystem(userProfile, system);
       if (!user) { saveUser(User, userProfile, system, done, callbackCreateUser); } 
-      else {      
-        setId(userProfile, user._id) 
-        updateUser(User, userProfile, system, done, callbackCreateUser); 
-      }  
+      else { updateUser(User, user, userProfile, system, done, callbackCreateUser); }  
     }, function(err) {
       return done(err);
     });    
@@ -66,7 +63,7 @@ var saveUser = function(User, userProfile, done, callbackCreateUser) {
     }); 
 };
 
-var updateUser = function(User, userProfile, done, callbackCreateUser) {
+var updateUser = function(User, user, userProfile, done, callbackCreateUser) {
   userService.update(user._id, user)
     .then(function (result) {
       return done(null, user);
