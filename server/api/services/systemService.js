@@ -20,7 +20,7 @@ module.exports = (function () {
   };
 
   var findOne = function (param) {
-    return repository.findOne(param).then(function(result) {
+    return repository.findOne(param).then(function(results) {
       return results.map(function(system) {
         return system.profile;
       });       
