@@ -77,7 +77,6 @@ var updateUser = function(User, userProfile, done, callbackCreateUser) {
 
 var createUser = function(User, profile) {
   var user = new User({
-    _id: id,
     name: profile.displayName,
     email: profile.emails[0].value,
     image: profile.photos[0].value,
