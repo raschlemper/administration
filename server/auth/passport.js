@@ -38,13 +38,14 @@ exports.google = function (User, config, system) {
       passReqToCallback: true
     },
     function(accessToken, refreshToken, profile, done) {
+      console.log(profile);
       saveOrUpdateUser(User, profile, system, done, createUser);
     }
   ));
 };
 
 var saveOrUpdateUser = function(User, profile, system, done, callbackCreateUser) {
-  userService.findOneGoogle({'google.id': profile.id})
+  userService.findOne({'google.id': profile.id})
     .then(function(user) {
       console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>',user);
       if (!user) { saveUser(User, profile, system, done, callbackCreateUser); } 
