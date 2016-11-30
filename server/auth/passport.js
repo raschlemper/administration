@@ -64,7 +64,7 @@ var saveUser = function(User, userProfile, done, callbackCreateUser) {
 };
 
 var updateUser = function(User, user, userProfile, done, callbackCreateUser) {
-  userService.update(user._id, user)
+  userService.update(user._id, userProfile)
     .then(function (result) {
       return done(null, user);
     }, function(err) {
