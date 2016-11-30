@@ -46,7 +46,6 @@ exports.google = function (User, config, system) {
 var saveOrUpdateUser = function(User, profile, system, done, callbackCreateUser) {
   userService.findOne({'google.id': profile.id})
     .then(function(user) {
-      console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>',user);
       if (!user) { saveUser(User, profile, system, done, callbackCreateUser); } 
       else { updateUser(User, profile, system, done, callbackCreateUser); }  
     }, function(err) {
@@ -57,7 +56,6 @@ var saveOrUpdateUser = function(User, profile, system, done, callbackCreateUser)
 var saveUser = function(User, profile, system, done, callbackCreateUser) {
   var user = callbackCreateUser(User, profile);
   // setSystem(user, system);
-  console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>',user);
   userService.save(user)
     .then(function (result) {
       return done(null, user);
