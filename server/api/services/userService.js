@@ -21,7 +21,9 @@ module.exports = (function () {
 
   var findOne = function (param) {
     return repository.findOne(param).then(function(result) {
-      return result.profile;
+      return results.map(function(user) {
+        return user.profile;
+      });       
     });
   };
 
