@@ -22,6 +22,9 @@ exports.local = function (User, config, system) {
                 }
                 if (!user.authenticate(password)) { 
                     return done(null, false, { message: 'PASSWORD_NOT_CORRECT' }); 
+                }                
+                if (!systemAuthorized(user, system)) { 
+                    return done(null, false, { message: 'SYSTEM_NOT_AUTHORIZED' }); 
                 }
                 return done(null, user);
             });
@@ -44,7 +47,10 @@ exports.google = function (User, config, system) {
 
 var saveOrUpdateUser = function(User, profile, system, done, callbackCreateUser) {
   userService.findOne({'google.id': profile.id})
-    .then(function(user) {
+    .then(function(user) {               
+      if (!systemAuthorized(user, system)) { 
+          return done(null, false, { message: 'SYSTEM_NOT_AUTHORIZED' }); 
+      }
       var userProfile = callbackCreateUser(User, profile);
       setId(userProfile, user);
       setSystem(userProfile, system);
