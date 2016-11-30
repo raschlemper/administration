@@ -15,15 +15,15 @@ module.exports = (function () {
 
   var findById = function (id) {
     return repository.findById(id).then(function(result) {
+      if(!result) return;
       return result.profile;
     });
   };
 
   var findOne = function (param) {
-    return repository.findOne(param).then(function(results) {
-      return results.map(function(system) {
-        return system.profile;
-      });       
+    return repository.findOne(param).then(function(result) {
+      if(!result) return;
+      return result.profile;
     });
   };
 
