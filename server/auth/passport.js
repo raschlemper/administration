@@ -90,7 +90,7 @@ var createUser = function(User, profile) {
 
 var setSystem = function(user, system) {
   if(user.systems) { user.systems = []; }
-  user.systems.push(system);
+  user.systems.push(system.toString());
 };
 
 var getCallbackURL = function(url, target) {
