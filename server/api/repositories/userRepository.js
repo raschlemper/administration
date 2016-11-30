@@ -7,23 +7,15 @@ var User = require(config.resources.models + '/userModel');
 module.exports = (function () {
 
   var findAll = function () {
-    return User.findAsync().then(function(results) {
-      return results.map(function(user) {
-        return user.profile;
-      });       
-    });
+    return User.findAsync();
   };
 
   var findById = function (userId) {
-    return User.findByIdAsync(userId).then(function(result) {
-      return result.profile;
-    });
+    return User.findByIdAsync(userId);
   };
 
   var findOne = function (params) {
-    return User.findOneAsync(params).then(function(result) {
-      return result.profile;
-    });
+    return User.findOneAsync(params);
   };
 
   var save = function (user) {

@@ -56,6 +56,20 @@ UserSchema
   });
 
 UserSchema
+  .virtual('google')
+  .get(function() {
+    return {
+      'id': this._id,
+      'name': this.name,
+      'email':this.email,
+      'image': this.image,
+      'role': this.role,
+      'systems': this.systems,
+      'google': google
+    };
+  });
+
+UserSchema
   .virtual('token')
   .get(function() {
     return {

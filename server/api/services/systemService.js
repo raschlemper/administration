@@ -6,15 +6,23 @@ var repository = require(config.resources.repositories + '/systemRepository');
 module.exports = (function () {
 
   var findAll = function () {
-    return repository.findAll();
+    return repository.findAll().then(function(results) {
+      return results.map(function(system) {
+        return system.profile;
+      });       
+    });
   };
 
   var findById = function (id) {
-    return repository.findById(id);
+    return repository.findById(id).then(function(result) {
+      return result.profile;
+    });
   };
 
   var findOne = function (param) {
-    return repository.findOne(param);
+    return repository.findOne(param).then(function(result) {
+      return result.profile;
+    });
   };
 
   var save = function (system) {
