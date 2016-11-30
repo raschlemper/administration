@@ -57,6 +57,7 @@ var saveOrUpdateUser = function(User, profile, system, done, callbackCreateUser)
 var saveUser = function(User, userProfile, done, callbackCreateUser) {
   userService.save(userProfile)
     .then(function (result) {
+      console.log(result);
       return done(null, result);
     }, function(err) {
       return done(err);
@@ -66,6 +67,7 @@ var saveUser = function(User, userProfile, done, callbackCreateUser) {
 var updateUser = function(User, userProfile, done, callbackCreateUser) {
   userService.update(userProfile._id, userProfile)
     .then(function (result) {
+      console.log(result);
       return done(null, result);
     }, function(err) {
       return done(err);
