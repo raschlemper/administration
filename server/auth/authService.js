@@ -36,9 +36,10 @@ module.exports = (function () {
   };  
 
   var systemAuthorized = function(user, systemId) {
+    console.log(user.systems);
     var authorized = false;
     user.systems.map(function(system) {
-      console.log(system._id, systemId, system._id === systemId);
+      console.log(system, systemId, system._id === systemId);
       if(system._id === systemId) { authorized = true; }
     });
     return authorized;
