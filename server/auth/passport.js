@@ -30,6 +30,7 @@ exports.local = function (User, config, system) {
                 var userProfile = createUser(User, user);
                 setId(userProfile, user);
                 setSystem(userProfile, system);
+                console.log(userProfile);
                 return done(null, userProfile);
             });
         }
