@@ -10,29 +10,29 @@ var authService = require('./authService');
 exports.local = function (User, config, system) {
     passport.use(
         new LocalStrategy({
-            usernameField: 'email',
-            passwordField: 'password'
+          usernameField: 'email',
+          passwordField: 'password'
         }, 
         function(email, password, done) {
-            User.findOne({
-                email: email.toLowerCase()
-            }, function(err, user) {
-                if (err) return done(err);
-                if (!user) { 
-                    return done(null, false, 'EMAIL_NOT_REGISTERED'); 
-                }
-                if (!user.authenticate(password)) { 
-                    return done(null, false, 'PASSWORD_NOT_CORRECT'); 
-                }                
-                if (!authService.systemAuthorized(user, system)) { 
-                    return done(null, false, 'SYSTEM_NOT_AUTHORIZED'); 
-                }
-                console.log('>>>>>>>>>>>>> Profile passport >>>', user.profile);
-                var userProfile = createUser(User, user.profile);
-                setId(userProfile, user);
-                setSystem(userProfile, system);
-                return done(null, userProfile);
-            });
+          User.findOne({
+            email: email.toLowerCase()
+          }, function(err, user) {
+            if (err) return done(err);
+            if (!user) { 
+                return done(null, false, 'EMAIL_NOT_REGISTERED'); 
+            }
+            if (!user.authenticate(password)) { 
+                return done(null, false, 'PASSWORD_NOT_CORRECT'); 
+            }                
+            if (!authService.systemAuthorized(user, system)) { 
+                return done(null, false, 'SYSTEM_NOT_AUTHORIZED'); 
+            }
+            console.log('>>>>>>>>>>>>> Profile passport >>>', user.profile);
+            var userProfile = createUser(User, user.profile);
+            setId(userProfile, user);
+            setSystem(userProfile, user);
+            return done(null, userProfile);
+          });
         }
     ));
 };
@@ -45,12 +45,12 @@ exports.google = function (User, config, system) {
       callbackURL: config.google.callbackURL
     },
     function(accessToken, refreshToken, profile, done) {
-      saveOrUpdateUser(User, profile, system, done, createUserGoogle);
+      saveOrUpdateUser(User, profile, system, done);
     }
   ));
 };
 
-var saveOrUpdateUser = function(User, profile, system, done, callbackCreateUser) {
+var saveOrUpdateUserGoogle = function(User, profile, system, done) {
   userService.findOne({'google.id': profile.id})
     .then(function(user) {               
       if (!authService.systemAuthorized(user, system)) { 
@@ -58,15 +58,19 @@ var saveOrUpdateUser = function(User, profile, system, done, callbackCreateUser)
       }
       var userProfile = callbackCreateUser(User, profile);
       setId(userProfile, user);
-      setSystem(userProfile, system);
-      if (!user) { saveUser(User, userProfile, done, callbackCreateUser); } 
-      else { updateUser(User, userProfile, done, callbackCreateUser); }  
+      setSystem(userProfile, user); 
+      saveOrUpdateUser(User, userProfile, done, createUserGoogle); 
     }, function(err) {
       return done(err);
     });    
 };
 
-var saveUser = function(User, userProfile, done, callbackCreateUser) {
+var saveOrUpdateUser = function(User, userProfile, done, callbackCreateUser) { 
+  if (!user) { saveUser(User, userProfile, done); } 
+  else { updateUser(User, userProfile, done); }
+};
+
+var saveUser = function(User, userProfile, done) {
   userService.save(userProfile)
     .then(function (result) {
       return done(null, result);
@@ -75,7 +79,7 @@ var saveUser = function(User, userProfile, done, callbackCreateUser) {
     }); 
 };
 
-var updateUser = function(User, userProfile, done, callbackCreateUser) {
+var updateUser = function(User, userProfile, done) {
   userService.update(userProfile._id, userProfile)
     .then(function (result) {
       return done(null, result);
@@ -113,10 +117,8 @@ var setId = function(profile, user) {
   profile._id = id;
 };
 
-//TODO: Pensar uma maneira de fazer a add do systema
-var setSystem = function(profile, system) {
-  // if(profile.systems) { profile.systems = []; }
-  // profile.systems.push(system.toString());
+var setSystem = function(profile, user) {
+  profile.systems = user.systems;
 };
 
 var getCallbackURL = function(url, target) {
