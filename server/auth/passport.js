@@ -23,13 +23,13 @@ exports.local = function (User, config, system) {
             }
             if (!user.authenticate(password)) { 
                 return done(null, false, 'PASSWORD_NOT_CORRECT'); 
-            }                
-            if (!authService.systemAuthorized(user.profile, system)) { 
-                return done(null, false, 'SYSTEM_NOT_AUTHORIZED'); 
             }
             var userProfile = createUser(User, user.profile);
             setId(userProfile, user);
-            setSystem(userProfile, user);
+            setSystem(userProfile, user);                
+            if (!authService.systemAuthorized(user.profile, system)) { 
+                return done(null, false, 'SYSTEM_NOT_AUTHORIZED'); 
+            }
             return done(null, userProfile);
           });
         }
@@ -51,13 +51,13 @@ exports.google = function (User, config, system) {
 
 var saveOrUpdateUserGoogle = function(User, profile, system, done) {
   userService.findOne({'google.id': profile.id})
-    .then(function(user) {               
-      if (!authService.systemAuthorized(user, system)) { 
-          return done(null, false, 'SYSTEM_NOT_AUTHORIZED'); 
-      }
+    .then(function(user) {  
       var userProfile = callbackCreateUser(User, profile);
       setId(userProfile, user);
-      setSystem(userProfile, user.profile); 
+      setSystem(userProfile, user.profile);              
+      if (!authService.systemAuthorized(userProfile, system)) { 
+          return done(null, false, 'SYSTEM_NOT_AUTHORIZED'); 
+      }
       saveOrUpdateUser(User, userProfile, done, createUserGoogle); 
     }, function(err) {
       return done(err);
