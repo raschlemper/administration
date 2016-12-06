@@ -17,6 +17,7 @@ exports.local = function (User, config, system) {
             User.findOne({
                 email: email.toLowerCase()
             }, function(err, user) {
+                console.log(user);
                 if (err) return done(err);
                 if (!user) { 
                     return done(null, false, 'EMAIL_NOT_REGISTERED'); 
