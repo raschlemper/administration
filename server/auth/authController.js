@@ -46,6 +46,7 @@ module.exports = (function () {
   var isAuthenticated = function (req, res, next) {
     try {
       var token = getToken(req);
+      console.log(token);
       var decoded = authService.isAuthenticated(token);
       console.log(decoded);
       if(!authService.systemAuthorized(decoded.user, getSystem(req))) {
