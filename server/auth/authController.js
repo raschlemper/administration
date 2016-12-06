@@ -14,7 +14,7 @@ module.exports = (function () {
   }
 
   var google = function(req, res, next) {
-    console.log(getSystem(req));
+    console.log('>>>>>>>>>>>>>>>>>>> SYSTEM >>> ',getSystem(req));
     passportConfig.google(User, config, getSystem(req));
     passport.authenticate('google', {
       failureRedirect: getTarget(req) || config.google.callbackURL,
