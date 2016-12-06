@@ -49,7 +49,7 @@ module.exports = (function () {
       console.log(token);
       var decoded = authService.isAuthenticated(token);
       console.log(decoded);
-      if(!authService.systemAuthorized(decoded.user, getSystem(req))) {
+      if(!authService.systemAuthorized(decoded.user.systems, getSystem(req))) {
         res.status(401).send('SYSTEM_NOT_AUTHORIZED');
       } else {
         res.send(decoded.user);         

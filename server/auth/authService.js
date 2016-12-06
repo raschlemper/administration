@@ -35,9 +35,9 @@ module.exports = (function () {
     res.redirect('/');
   };  
 
-  var systemAuthorized = function(user, systemId) {
+  var systemAuthorized = function(systems, systemId) {
     var authorized = false;
-    user.systems.map(function(system) {
+    systems.map(function(system) {
       console.log(system._id.toString(), system._id, systemId, system._id.toString() === systemId);
       if(system._id.toString() === systemId) { authorized = true; }
     });
