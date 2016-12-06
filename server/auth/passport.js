@@ -27,8 +27,11 @@ exports.local = function (User, config, system) {
                 if (!authService.systemAuthorized(user, system)) { 
                     return done(null, false, 'SYSTEM_NOT_AUTHORIZED'); 
                 }
+                console.log(user);
                 var userProfile = createUser(User, user);
+                console.log(userProfile);
                 setId(userProfile, user);
+                console.log(userProfile);
                 setSystem(userProfile, system);
                 console.log(userProfile);
                 return done(null, userProfile);
