@@ -40,7 +40,7 @@ module.exports = (function () {
     var authorized = false;
     user.systems.map(function(system) {
       console.log(system, systemId, system._id === systemId);
-      if(system._id === systemId) { authorized = true; }
+      if(system === systemId) { authorized = true; }
     });
     return authorized;
   };
