@@ -34,6 +34,7 @@ module.exports = (function () {
       var error = err || (!info || isEmpty(info) ? null : info); 
       if (error) return res.redirect(getTarget(req) + '?error=' + error);
       if (!user) return res.redirect(getTarget(req) + '?error=' + 'APPLICATION_INCORRECT');
+      console.log(user, user.profile);
       var token = authService.signToken(user.profile);
       next(token);
     })(req, res, next);    
