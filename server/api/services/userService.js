@@ -23,6 +23,7 @@ module.exports = (function () {
   var findOne = function (param) {
     return repository.findOne(param).then(function(result) {
       if(!result) return;
+      console.log('>>>>>>>>>>>>> Profile service >>>', result.profile);
       return result.profile;
     });
   };
