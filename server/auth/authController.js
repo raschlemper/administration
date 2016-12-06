@@ -30,12 +30,11 @@ module.exports = (function () {
   }
 
   var passportCallback = function(strategy, req, res, next) {
-    console.log('>>>>>>>>>>>>>>>>>>> SYSTEM >>> ',getSystem(req));
     passport.authenticate(strategy, function (err, user, info) {
       var error = err || (!info || isEmpty(info) ? null : info); 
       if (error) return res.redirect(getTarget(req) + '?error=' + error);
       if (!user) return res.redirect(getTarget(req) + '?error=' + 'APPLICATION_INCORRECT');
-      var token = authService.signToken(user.profile, getSystem(req));
+      var token = authService.signToken(user.profile);
       next(token);
     })(req, res, next);    
   };
@@ -45,6 +44,7 @@ module.exports = (function () {
   };
     
   var isAuthenticated = function (req, res, next) {
+    console.log('>>>>>>>>>>>>>>>>>>> SYSTEM >>> ', getSystem(req));
     try {
       var token = getToken(req);
       var decoded = authService.isAuthenticated(token);

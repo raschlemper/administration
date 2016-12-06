@@ -14,8 +14,8 @@ module.exports = (function () {
     }
   };
 
-  var signToken = function (user, system) {
-    return jwt.sign({ user: user, system: system }, config.secrets, { expiresInMinutes: 60*5 });
+  var signToken = function (user) {
+    return jwt.sign({ user: user }, config.secrets, { expiresInMinutes: 60*5 });
   };
 
   var decodeToken = function (token) {

@@ -12,7 +12,7 @@ var controller = require('./authController');
 // // require('./passport').twitter(User, config);
 // require('./passport').google(User, config);
 
-router.get('/authenticated', controller.isAuthenticated);
+router.get('/authenticated/:system', controller.isAuthenticated);
 router.get('/token/user', controller.getUser);
 
 // router.post('/local', controller.local);
