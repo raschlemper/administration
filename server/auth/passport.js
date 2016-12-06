@@ -5,6 +5,7 @@ var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 var TwitterStrategy = require('passport-twitter').Strategy;
 var config = require('../config/environment');
 var userService = require(config.resources.services + '/userService');
+var authService = require('./authService');
 
 exports.local = function (User, config, system) {
     passport.use(
@@ -23,10 +24,13 @@ exports.local = function (User, config, system) {
                 if (!user.authenticate(password)) { 
                     return done(null, false, 'PASSWORD_NOT_CORRECT'); 
                 }                
-                if (!systemAuthorized(user, system)) { 
+                if (!authService.systemAuthorized(user, system)) { 
                     return done(null, false, 'SYSTEM_NOT_AUTHORIZED'); 
                 }
-                return done(null, user);
+                var userProfile = createUser(User, user);
+                setId(userProfile, user);
+                setSystem(userProfile, system);
+                return done(null, userProfile);
             });
         }
     ));
@@ -40,7 +44,7 @@ exports.google = function (User, config, system) {
       callbackURL: config.google.callbackURL
     },
     function(accessToken, refreshToken, profile, done) {
-      saveOrUpdateUser(User, profile, system, done, createUser);
+      saveOrUpdateUser(User, profile, system, done, createUserGoogle);
     }
   ));
 };
@@ -48,7 +52,7 @@ exports.google = function (User, config, system) {
 var saveOrUpdateUser = function(User, profile, system, done, callbackCreateUser) {
   userService.findOne({'google.id': profile.id})
     .then(function(user) {               
-      if (!systemAuthorized(user, system)) { 
+      if (!authService.systemAuthorized(user, system)) { 
           return done(null, false, 'SYSTEM_NOT_AUTHORIZED'); 
       }
       var userProfile = callbackCreateUser(User, profile);
@@ -81,13 +85,24 @@ var updateUser = function(User, userProfile, done, callbackCreateUser) {
 
 var createUser = function(User, profile) {
   var user = new User({
+    name: profile.name,
+    email: profile.email,
+    image: null,
+    role: 'user',
+    username: profile.username,
+    provider: 'local'
+  });
+  return user;
+};
+
+var createUserGoogle = function(User, profile) {
+  var user = new User({
     name: profile.displayName,
     email: profile.emails[0].value,
     image: profile.photos[0].value,
     role: 'user',
     username: profile.username,
-    provider: 'google',
-    google: profile._json
+    provider: 'google'
   });
   return user;
 };
@@ -104,14 +119,6 @@ var setSystem = function(profile, system) {
 
 var getCallbackURL = function(url, target) {
     return url + "?target=" + target;
-};
-
-var systemAuthorized = function(user, systemId) {
-  var authorized = false;
-  user.systems.map(function(system) {
-    if(system.id === systemId) { authorized = true; }
-  });
-  return authorized;
 };
 
 

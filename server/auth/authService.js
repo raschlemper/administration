@@ -14,8 +14,8 @@ module.exports = (function () {
     }
   };
 
-  var signToken = function (user) {
-    return jwt.sign({ user: user }, config.secrets, { expiresInMinutes: 60*5 });
+  var signToken = function (user, system) {
+    return jwt.sign({ user: user, system: system }, config.secrets, { expiresInMinutes: 60*5 });
   };
 
   var decodeToken = function (token) {
@@ -33,12 +33,21 @@ module.exports = (function () {
     var token = signToken(req.user._id, req.user.role);
     res.cookie('token', token);
     res.redirect('/');
-  }
+  };  
+
+  var systemAuthorized = function(user, systemId) {
+    var authorized = false;
+    user.systems.map(function(system) {
+      if(system.id === systemId) { authorized = true; }
+    });
+    return authorized;
+  };
 
   return { 
     isAuthenticated: isAuthenticated,
     signToken: signToken,
-    decodeToken: decodeToken
+    decodeToken: decodeToken,
+    systemAuthorized: systemAuthorized
   };
 
 })();

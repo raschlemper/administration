@@ -39,7 +39,7 @@ module.exports = (function () {
   };
 
   var redirect = function(user, req, res, next) {
-    var token = authService.signToken(user.profile);
+    var token = authService.signToken(user.profile, getSystem(req));
     res.redirect(getTarget(req) + '?token=' + token);
   };
     
@@ -47,7 +47,11 @@ module.exports = (function () {
     try {
       var token = getToken(req);
       var decoded = authService.isAuthenticated(token);
-      res.send(decoded.user); 
+      if(!authService.systemAuthorized(decoded.user, decoded.system)) {
+        res.status(401).send('SYSTEM_NOT_AUTHORIZED');
+      } else {
+        res.send(decoded.user);         
+      }
     } catch (err) {
       res.status(401).send(err);
     }
