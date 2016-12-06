@@ -44,11 +44,9 @@ module.exports = (function () {
   };
     
   var isAuthenticated = function (req, res, next) {
-    console.log('>>>>>>>>>>>>>>>>>>> SYSTEM >>> ', getSystem(req));
     try {
       var token = getToken(req);
       var decoded = authService.isAuthenticated(token);
-      console.log(decoded);
       if(!authService.systemAuthorized(decoded.user, decoded.system)) {
         res.status(401).send('SYSTEM_NOT_AUTHORIZED');
       } else {

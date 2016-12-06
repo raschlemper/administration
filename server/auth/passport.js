@@ -112,9 +112,10 @@ var setId = function(profile, user) {
   profile._id = id;
 };
 
+//TODO: Pensar uma maneira de fazer a add do systema
 var setSystem = function(profile, system) {
-  if(profile.systems) { profile.systems = []; }
-  profile.systems.push(system.toString());
+  // if(profile.systems) { profile.systems = []; }
+  // profile.systems.push(system.toString());
 };
 
 var getCallbackURL = function(url, target) {
