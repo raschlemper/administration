@@ -24,7 +24,7 @@ exports.local = function (User, config, system) {
             if (!user.authenticate(password)) { 
                 return done(null, false, 'PASSWORD_NOT_CORRECT'); 
             }                
-            if (!authService.systemAuthorized(user, system)) { 
+            if (!authService.systemAuthorized(user.profile, system)) { 
                 return done(null, false, 'SYSTEM_NOT_AUTHORIZED'); 
             }
             var userProfile = createUser(User, user.profile);
@@ -57,7 +57,7 @@ var saveOrUpdateUserGoogle = function(User, profile, system, done) {
       }
       var userProfile = callbackCreateUser(User, profile);
       setId(userProfile, user);
-      setSystem(userProfile, user); 
+      setSystem(userProfile, user.profile); 
       saveOrUpdateUser(User, userProfile, done, createUserGoogle); 
     }, function(err) {
       return done(err);

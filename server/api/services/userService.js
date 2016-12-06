@@ -6,25 +6,15 @@ var repository = require(config.resources.repositories + '/userRepository');
 module.exports = (function () {
 
   var findAll = function () {
-    return repository.findAll().then(function(results) {
-      return results.map(function(user) {
-        return user.profile;
-      });       
-    });
+    return repository.findAll();
   };
 
   var findById = function (id) {
-    return repository.findById(id).then(function(result) {
-      if(!result) return;
-      return result.profile;
-    });
+    return repository.findById(id);
   };
 
   var findOne = function (param) {
-    return repository.findOne(param).then(function(result) {
-      if(!result) return;
-      return result.profile;
-    });
+    return repository.findOne(param);
   };
 
   var findOneGoogle = function (param) {
