@@ -34,7 +34,6 @@ module.exports = (function () {
       var error = err || (!info || isEmpty(info) ? null : info); 
       if (error) return res.redirect(getTarget(req) + '?error=' + error);
       if (!user) return res.redirect(getTarget(req) + '?error=' + 'APPLICATION_INCORRECT');
-      console.log(user);
       var token = authService.signToken(user.profile);
       next(token);
     })(req, res, next);    
@@ -48,7 +47,6 @@ module.exports = (function () {
     try {
       var token = getToken(req);
       var decoded = authService.isAuthenticated(token);
-      console.log('>>>>>>>>>>>>>>>>>> Decoded >>>> ', decoded.user, getSystem(req));
       if(!authService.systemAuthorized(decoded.user, getSystem(req))) {
         res.status(401).send('SYSTEM_NOT_AUTHORIZED');
       } else {

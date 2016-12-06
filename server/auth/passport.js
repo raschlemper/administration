@@ -27,7 +27,6 @@ exports.local = function (User, config, system) {
             if (!authService.systemAuthorized(user, system)) { 
                 return done(null, false, 'SYSTEM_NOT_AUTHORIZED'); 
             }
-            console.log('>>>>>>>>>>>>> Profile passport >>>', user.profile);
             var userProfile = createUser(User, user.profile);
             setId(userProfile, user);
             setSystem(userProfile, user);
