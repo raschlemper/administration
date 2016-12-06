@@ -118,7 +118,10 @@ var setId = function(profile, user) {
 };
 
 var setSystem = function(profile, user) {
-  profile.systems = user.systems;
+  profile.systems = [];
+  user.systems.map(function(system) {
+    profile.systems.push({ _id: system._id });
+  });
 };
 
 var getCallbackURL = function(url, target) {
