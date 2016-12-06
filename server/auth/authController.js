@@ -14,6 +14,7 @@ module.exports = (function () {
   }
 
   var google = function(req, res, next) {
+    console.log(getSystem(req));
     passportConfig.google(User, config, getSystem(req));
     passport.authenticate('google', {
       failureRedirect: getTarget(req) || config.google.callbackURL,
@@ -34,12 +35,12 @@ module.exports = (function () {
       var error = err || (!info || isEmpty(info) ? null : info); 
       if (error) return res.redirect(getTarget(req) + '?error=' + error);
       if (!user) return res.redirect(getTarget(req) + '?error=' + 'APPLICATION_INCORRECT');
-      next(user);
+      var token = authService.signToken(user.profile, getSystem(req));
+      next(token);
     })(req, res, next);    
   };
 
-  var redirect = function(user, req, res, next) {
-    var token = authService.signToken(user.profile, getSystem(req));
+  var redirect = function(token, req, res, next) {    
     res.redirect(getTarget(req) + '?token=' + token);
   };
     
