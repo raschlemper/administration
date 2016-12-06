@@ -14,7 +14,6 @@ module.exports = (function () {
   }
 
   var google = function(req, res, next) {
-    console.log('>>>>>>>>>>>>>>>>>>> SYSTEM >>> ',getSystem(req));
     passportConfig.google(User, config, getSystem(req));
     passport.authenticate('google', {
       failureRedirect: getTarget(req) || config.google.callbackURL,
@@ -31,6 +30,7 @@ module.exports = (function () {
   }
 
   var passportCallback = function(strategy, req, res, next) {
+    console.log('>>>>>>>>>>>>>>>>>>> SYSTEM >>> ',getSystem(req));
     passport.authenticate(strategy, function (err, user, info) {
       var error = err || (!info || isEmpty(info) ? null : info); 
       if (error) return res.redirect(getTarget(req) + '?error=' + error);
