@@ -20,7 +20,8 @@ exports.local = function (User, config, system) {
             if (err) return done(err);
             var userLogin = user.login;
             emailValidation(user);
-            passwordValidation(user, password);             
+            passwordValidation(user, password);      
+            console.log('>>>>>>>> systems >>>', userLogin);     
             systemValidation(userLogin.systems, system);
             return done(null, createUser(User, userLogin));
           });
