@@ -20,9 +20,8 @@ exports.local = function (User, config, system) {
             if (err) return done(err);
             var userLogin = user.login;
             emailValidation(user);
-            passwordValidation(user, password);      
-            console.log('>>>>>>>> systems >>>', userLogin.systems);     
-            systemValidation(userLogin.systems, system);
+            passwordValidation(user, password);       
+            systemValidation(userLogin, system);
             return done(null, createUser(User, userLogin));
           });
         }
@@ -46,7 +45,7 @@ var saveOrUpdateUserGoogle = function(User, profile, system, done) {
   userService.findOne({'google.id': profile.id})
     .then(function(user) { 
       var userLogin = user.login;            
-      systemValidation(userLogin.systems, system);   
+      systemValidation(userLogin, system);   
       saveOrUpdateUser(User, createUserGoogle(User, userLogin, profile), done); 
     }, function(err) {
       return done(err);
