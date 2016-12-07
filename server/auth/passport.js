@@ -17,20 +17,12 @@ exports.local = function (User, config, system) {
           User.findOne({
             email: email.toLowerCase()
           }, function(err, user) {
+            user = user.login;
             if (err) return done(err);
-            if (!user) { 
-                return done(null, false, 'EMAIL_NOT_REGISTERED'); 
-            }
-            if (!user.authenticate(password)) { 
-                return done(null, false, 'PASSWORD_NOT_CORRECT'); 
-            }  
-            var userProfile = createUser(User, user.profile);
-            setId(userProfile, user);
-            setSystem(userProfile, user);              
-            if (!authService.systemAuthorized(userProfile.systems, system)) { 
-                return done(null, false, 'SYSTEM_NOT_AUTHORIZED'); 
-            }
-            return done(null, userProfile);
+            emailValidation(user);
+            passwordValidation(user, password);             
+            systemValidation(user.systems, system);
+            return done(null, createUser(User, user));
           });
         }
     ));
@@ -52,19 +44,15 @@ exports.google = function (User, config, system) {
 var saveOrUpdateUserGoogle = function(User, profile, system, done) {
   userService.findOne({'google.id': profile.id})
     .then(function(user) {  
-      var userProfile = callbackCreateUser(User, profile);
-      setId(userProfile, user);
-      setSystem(userProfile, user.profile);              
-      if (!authService.systemAuthorized(userProfile.systems, system)) { 
-          return done(null, false, 'SYSTEM_NOT_AUTHORIZED'); 
-      }
-      saveOrUpdateUser(User, userProfile, done, createUserGoogle); 
+      user = user.login;               
+      systemValidation(user.systems, system);   
+      saveOrUpdateUser(User, createUserGoogle(User, user, profile), done); 
     }, function(err) {
       return done(err);
     });    
 };
 
-var saveOrUpdateUser = function(User, userProfile, done, callbackCreateUser) { 
+var saveOrUpdateUser = function(User, userProfile, done) { 
   if (!user) { saveUser(User, userProfile, done); } 
   else { updateUser(User, userProfile, done); }
 };
@@ -87,20 +75,22 @@ var updateUser = function(User, userProfile, done) {
     }); 
 };
 
-var createUser = function(User, profile) {
+var createUser = function(User, user) {
   var user = new User({
-    name: profile.name,
-    email: profile.email,
+    _id: (user && user._id) || null,
+    name: user.name,
+    email: user.email,
     image: null,
     role: 'user',
-    username: profile.username,
+    username: user.username,
     provider: 'local'
   });
   return user;
 };
 
-var createUserGoogle = function(User, profile) {
+var createUserGoogle = function(User, user, profile) {
   var user = new User({
+    _id: (user && user._id) || null,
     name: profile.displayName,
     email: profile.emails[0].value,
     image: profile.photos[0].value,
@@ -111,23 +101,33 @@ var createUserGoogle = function(User, profile) {
   return user;
 };
 
-var setId = function(profile, user) {
-  var id = (user && user._id) || null;
-  profile._id = id;
-};
-
-var setSystem = function(profile, user) {
-  profile.systems = [];
-  user.systems.map(function(system) {
-    profile.systems.push({ _id: system._id });
-  });
-};
-
 var getCallbackURL = function(url, target) {
     return url + "?target=" + target;
 };
 
+/*
+ * Validation
+ */
 
+var emailValidation = function(user) {
+  if (!user) { 
+    return done(null, false, 'EMAIL_NOT_REGISTERED'); 
+  } 
+};
+
+var passwordValidation = function(user, password) {
+  if (!user.authenticate(password)) { 
+    return done(null, false, 'PASSWORD_NOT_CORRECT'); 
+  } 
+};
+
+var systemValidation = function(user, system) {
+  if (!authService.systemAuthorized(user.systems, system)) { 
+    return done(null, false, 'SYSTEM_NOT_AUTHORIZED'); 
+  }
+};
+
+ 
 
 
 

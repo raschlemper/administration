@@ -43,6 +43,18 @@ UserSchema
   });
 
 UserSchema
+  .virtual('login')
+  .get(function() {
+    return {
+      '_id': this._id,
+      'name': this.name,
+      'email':this.email,
+      'image': this.image,
+      'systems': getSystem(this.systems)
+    };
+  });
+
+UserSchema
   .virtual('profile')
   .get(function() {
     return {
@@ -56,20 +68,6 @@ UserSchema
   });
 
 UserSchema
-  .virtual('profileGoogle')
-  .get(function() {
-    return {
-      '_id': this._id,
-      'name': this.name,
-      'email':this.email,
-      'image': this.image,
-      'role': this.role,
-      'systems': this.systems,
-      'google': google
-    };
-  });
-
-UserSchema
   .virtual('token')
   .get(function() {
     return {
@@ -77,6 +75,12 @@ UserSchema
       'role': this.role
     };
   });
+
+var getSystem = function(systems) {
+  return systems.map(function(system) {
+    return system._id;
+  });
+};
 
 /**
  * Validations
