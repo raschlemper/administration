@@ -19,9 +19,9 @@ exports.local = function (User, config, system) {
           }, function(err, user) {
             if (err) return done(err);
             var userLogin = user.login;
-            emailValidation(user, done);
-            passwordValidation(user, password, done);       
-            systemValidation(userLogin, system, done);
+            if(emailValidation(user)) { return emailError(done); }
+            if(passwordValidation(user, password) { return passwordError(done); }       
+            if(systemValidation(userLogin, system) { return systemError(done); }
             return done(null, createUser(User, userLogin));
           });
         }
@@ -44,8 +44,8 @@ exports.google = function (User, config, system) {
 var saveOrUpdateUserGoogle = function(User, profile, system, done) {
   userService.findOne({'google.id': profile.id})
     .then(function(user) { 
-      var userLogin = user.login;            
-      systemValidation(userLogin, system, done);   
+      var userLogin = user.login;                  
+      if(systemValidation(userLogin, system) { return systemError(done); }
       saveOrUpdateUser(User, createUserGoogle(User, userLogin, profile), done); 
     }, function(err) {
       return done(err);
@@ -109,22 +109,35 @@ var getCallbackURL = function(url, target) {
  * Validation
  */
 
-var emailValidation = function(user, done) {
-  if (!user) { 
-    return done(null, false, 'EMAIL_NOT_REGISTERED'); 
-  } 
+var emailValidation = function(user) {
+  if (!user) return false;
+  return true;
 };
 
-var passwordValidation = function(user, password, done) {
-  if (!user.authenticate(password)) { 
-    return done(null, false, 'PASSWORD_NOT_CORRECT'); 
-  } 
+var passwordValidation = function(user, password) {
+  if (!user.authenticate(password)) return false;
+  return true;
 };
 
-var systemValidation = function(user, system, done) {
-  if (!authService.systemAuthorized(user.systems, system)) { 
-    return done(null, false, 'SYSTEM_NOT_AUTHORIZED'); 
-  }
+var systemValidation = function(user, system) {
+  if (!authService.systemAuthorized(user.systems, system)) return false;
+  return true;
+};
+
+/*
+ * Error
+ */
+
+var emailError = function(done) {
+  return done(null, false, 'EMAIL_NOT_REGISTERED'); 
+};
+
+var passwordError = function(done) {
+  return done(null, false, 'PASSWORD_NOT_CORRECT'); 
+};
+
+var systemError= function(done) {
+  return done(null, false, 'SYSTEM_NOT_AUTHORIZED'); 
 };
 
  
