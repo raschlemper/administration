@@ -38,8 +38,8 @@ module.exports = (function () {
   var systemAuthorized = function(systems, systemId) {
     var authorized = false;
     systems.map(function(system) {
-      console.log(system._id.toString(), system._id, systemId, system._id.toString() === systemId);
-      if(system._id.toString() === systemId) { authorized = true; }
+      console.log(system, systemId, system === systemId);
+      if(system === systemId) { authorized = true; }
     });
     return authorized;
   };
