@@ -17,12 +17,12 @@ exports.local = function (User, config, system) {
           User.findOne({
             email: email.toLowerCase()
           }, function(err, user) {
-            user = user.login;
             if (err) return done(err);
+            var userLogin = user.login;
             emailValidation(user);
             passwordValidation(user, password);             
-            systemValidation(user.systems, system);
-            return done(null, createUser(User, user));
+            systemValidation(userLogin.systems, system);
+            return done(null, createUser(User, userLogin));
           });
         }
     ));
@@ -43,10 +43,10 @@ exports.google = function (User, config, system) {
 
 var saveOrUpdateUserGoogle = function(User, profile, system, done) {
   userService.findOne({'google.id': profile.id})
-    .then(function(user) {  
-      user = user.login;               
-      systemValidation(user.systems, system);   
-      saveOrUpdateUser(User, createUserGoogle(User, user, profile), done); 
+    .then(function(user) { 
+      var userLogin = user.login;            
+      systemValidation(userLogin.systems, system);   
+      saveOrUpdateUser(User, createUserGoogle(User, userLogin, profile), done); 
     }, function(err) {
       return done(err);
     });    
