@@ -34,7 +34,8 @@ module.exports = (function () {
       var error = err || (!info || isEmpty(info) ? null : info); 
       if (error) return res.redirect(getTarget(req) + '?error=' + error);
       if (!user) return res.redirect(getTarget(req) + '?error=' + 'APPLICATION_INCORRECT');
-      var token = authService.signToken(user.profile);
+      var token = authService.signToken(user);
+      console.log(user);
       next(token);
     })(req, res, next);    
   };
@@ -46,7 +47,6 @@ module.exports = (function () {
   var isAuthenticated = function (req, res, next) {
     try {
       var token = getToken(req);
-      console.log(token);
       var decoded = authService.isAuthenticated(token);
       console.log(decoded);
       if(!authService.systemAuthorized(decoded.user.systems, getSystem(req))) {
