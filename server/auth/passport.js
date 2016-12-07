@@ -19,9 +19,9 @@ exports.local = function (User, config, system) {
           }, function(err, user) {
             if (err) return done(err);
             var userLogin = user.login;
-            emailValidation(user);
-            passwordValidation(user, password);       
-            systemValidation(userLogin, system);
+            emailValidation(user, done);
+            passwordValidation(user, password, done);       
+            systemValidation(userLogin, system, done);
             return done(null, createUser(User, userLogin));
           });
         }
@@ -45,7 +45,7 @@ var saveOrUpdateUserGoogle = function(User, profile, system, done) {
   userService.findOne({'google.id': profile.id})
     .then(function(user) { 
       var userLogin = user.login;            
-      systemValidation(userLogin, system);   
+      systemValidation(userLogin, system, done);   
       saveOrUpdateUser(User, createUserGoogle(User, userLogin, profile), done); 
     }, function(err) {
       return done(err);
@@ -109,19 +109,19 @@ var getCallbackURL = function(url, target) {
  * Validation
  */
 
-var emailValidation = function(user) {
+var emailValidation = function(user, done) {
   if (!user) { 
     return done(null, false, 'EMAIL_NOT_REGISTERED'); 
   } 
 };
 
-var passwordValidation = function(user, password) {
+var passwordValidation = function(user, password, done) {
   if (!user.authenticate(password)) { 
     return done(null, false, 'PASSWORD_NOT_CORRECT'); 
   } 
 };
 
-var systemValidation = function(user, system) {
+var systemValidation = function(user, system, done) {
   if (!authService.systemAuthorized(user.systems, system)) { 
     return done(null, false, 'SYSTEM_NOT_AUTHORIZED'); 
   }
