@@ -83,7 +83,8 @@ var createUser = function(User, user) {
     image: null,
     role: 'user',
     username: user.username,
-    provider: 'local'
+    provider: 'local',
+    systems: user.systems
   });
   return user;
 };
@@ -96,7 +97,8 @@ var createUserGoogle = function(User, user, profile) {
     image: profile.photos[0].value,
     role: 'user',
     username: profile.username,
-    provider: 'google'
+    provider: 'google',
+    systems: user.systems
   });
   return user;
 };
