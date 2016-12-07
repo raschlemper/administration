@@ -19,9 +19,9 @@ exports.local = function (User, config, system) {
           }, function(err, user) {
             if (err) return done(err);
             var userLogin = user.login;
-            if(emailValidation(user)) { return emailError(done); }
-            if(passwordValidation(user, password)) { return passwordError(done); }       
-            if(systemValidation(userLogin, system)) { return systemError(done); }
+            if(!emailValidation(user)) { return emailError(done); }
+            if(!passwordValidation(user, password)) { return passwordError(done); }       
+            if(!systemValidation(userLogin, system)) { return systemError(done); }
             return done(null, createUser(User, userLogin));
           });
         }
@@ -45,7 +45,7 @@ var saveOrUpdateUserGoogle = function(User, profile, system, done) {
   userService.findOne({'google.id': profile.id})
     .then(function(user) { 
       var userLogin = user.login;                  
-      if(systemValidation(userLogin, system)) { return systemError(done); }
+      if(!systemValidation(userLogin, system)) { return systemError(done); }
       saveOrUpdateUser(User, createUserGoogle(User, userLogin, profile), done); 
     }, function(err) {
       return done(err);
