@@ -19,24 +19,24 @@ var config = {
   },
   port: process.env.PORT || process.env.OPENSHIFT_NODEJS_PORT || 8080,
   ip: process.env.IP   || process.env.OPENSHIFT_NODEJS_IP || '0.0.0.0',
-  secrets: 'supersecret',
+  secrets: 'prosoft-admin',
 
   facebook: {
     clientID:     process.env.FACEBOOK_ID || 'id',
     clientSecret: process.env.FACEBOOK_SECRET || 'secret',
-    callbackURL:  'https://ras-administration.herokuapp.com/auth/login/facebook/callback'
+    callbackURL:  'https://prosoft-admin.herokuapp.com/auth/login/facebook/callback'
   },
 
   twitter: {
     clientID:     process.env.TWITTER_ID || 'id',
     clientSecret: process.env.TWITTER_SECRET || 'secret',
-    callbackURL:  'https://ras-administration.herokuapp.com/auth/login/twitter/callback'
+    callbackURL:  'https://prosoft-admin.herokuapp.com/auth/login/twitter/callback'
   },
 
   google: {
     clientID:     "317866055004-q70qjlt86mu46jkscrqmj1ctpnn4kacv.apps.googleusercontent.com" || 'id',
     clientSecret: "SfDMnG9xWF88kkjWPiJSKSM2" || 'secret',
-    callbackURL:  'https://ras-administration.herokuapp.com/auth/callback/google'
+    callbackURL:  'https://prosoft-admin.herokuapp.com/auth/callback/google'
   }
 };
 
