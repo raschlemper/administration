@@ -46,13 +46,13 @@ var saveOrUpdateUserGoogle = function(User, profile, system, done) {
     .then(function(user) { 
       var userLogin = user.login;                  
       if(!systemValidation(userLogin, system)) { return systemError(done); }
-      saveOrUpdateUser(User, createUserGoogle(User, userLogin, profile), done); 
+      saveOrUpdateUser(User, user, createUserGoogle(User, userLogin, profile), done); 
     }, function(err) {
       return done(err);
     });    
 };
 
-var saveOrUpdateUser = function(User, userProfile, done) { 
+var saveOrUpdateUser = function(User, user, userProfile, done) { 
   if (!user) { saveUser(User, userProfile, done); } 
   else { updateUser(User, userProfile, done); }
 };
