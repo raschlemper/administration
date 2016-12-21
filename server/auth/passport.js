@@ -44,7 +44,7 @@ exports.google = function (User, config, system) {
 var saveOrUpdateUserGoogle = function(User, profile, system, done) {
   userService.findOne({'google.id': profile.id})
     .then(function(user) {  
-      var userProfile = (user ? createUserGoogle(User, userLogin, profile) : profile)
+      var userProfile = createUserGoogle(User, user, profile);
       saveOrUpdateUser(User, user, userProfile, done); 
     }, function(err) {
       return done(err);
@@ -54,8 +54,7 @@ var saveOrUpdateUserGoogle = function(User, profile, system, done) {
 var saveOrUpdateUser = function(User, user, userProfile, done) { 
   if (!user) { saveUser(User, userProfile, done); } 
   else { 
-    var userLogin = user.login;              
-    if(!systemValidation(userLogin, system)) { return systemError(done); }
+    if(!systemValidation(userProfile, system)) { return systemError(done); }
     updateUser(User, userProfile, done); 
   }
 };
@@ -101,7 +100,7 @@ var createUserGoogle = function(User, user, profile) {
     role: 'user',
     username: profile.username,
     provider: 'google',
-    systems: user.systems
+    systems: (user && user.systems)
   });
   return user;
 };
