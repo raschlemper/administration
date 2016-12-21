@@ -88,6 +88,7 @@ var createUser = function(User, user) {
     image: null,
     role: 'user',
     username: user.username,
+    password: null,
     provider: {id: id, name: 'local'},
     systems: user.systems
   });
@@ -102,6 +103,7 @@ var createUserGoogle = function(User, user, profile) {
     image: profile.photos[0].value,
     role: 'user',
     username: profile.username,
+    password: null,
     provider: {id: profile.id, name: 'google'},
     systems: (user && user.systems)
   });
