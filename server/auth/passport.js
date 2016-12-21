@@ -60,8 +60,10 @@ var saveOrUpdateUser = function(User, user, userProfile, done) {
 };
 
 var saveUser = function(User, userProfile, done) {
+  cosole.log(userProfile);
   userService.save(userProfile)
     .then(function (result) {
+      cosole.log(result);
       return done(null, result);
     }, function(err) {
       return done(err);
@@ -78,14 +80,15 @@ var updateUser = function(User, userProfile, done) {
 };
 
 var createUser = function(User, user) {
+  var id = (user && user._id);
   var user = new User({
-    _id: (user && user._id) || null,
+    _id: id || null,
     name: user.name,
     email: user.email,
     image: null,
     role: 'user',
     username: user.username,
-    provider: 'local',
+    provider: {id: id, name: 'local'},
     systems: user.systems
   });
   return user;
@@ -99,7 +102,7 @@ var createUserGoogle = function(User, user, profile) {
     image: profile.photos[0].value,
     role: 'user',
     username: profile.username,
-    provider: {id: profile.id, name:'google'},
+    provider: {id: profile.id, name: 'google'},
     systems: (user && user.systems)
   });
   return user;
