@@ -60,10 +60,10 @@ var saveOrUpdateUser = function(User, user, userProfile, done) {
 };
 
 var saveUser = function(User, userProfile, done) {
-  cosole.log(userProfile);
+  console.log(userProfile);
   userService.save(userProfile)
     .then(function (result) {
-      cosole.log(result);
+      console.log(result);
       return done(null, result);
     }, function(err) {
       return done(err);
