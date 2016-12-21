@@ -14,7 +14,7 @@ var UserSchema = new Schema({
   image: String,
   role: { type: String, default: 'user' },
   hashedPassword: String,
-  provider: String,
+  provider: { id: String, name: String },
   salt: String,
   facebook: {},
   twitter: {},

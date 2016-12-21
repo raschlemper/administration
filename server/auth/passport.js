@@ -42,7 +42,7 @@ exports.google = function (User, config, system) {
 };
 
 var saveOrUpdateUserGoogle = function(User, profile, system, done) {
-  userService.findOne({'google.id': profile.id})
+  userService.findOne({'provider.id': profile.id})
     .then(function(user) {  
       var userProfile = createUserGoogle(User, user, profile);
       saveOrUpdateUser(User, user, userProfile, done); 
@@ -99,7 +99,7 @@ var createUserGoogle = function(User, user, profile) {
     image: profile.photos[0].value,
     role: 'user',
     username: profile.username,
-    provider: 'google',
+    provider: {id: profile.id, name:'google'},
     systems: (user && user.systems)
   });
   return user;
